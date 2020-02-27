@@ -176,7 +176,7 @@ plot(lendPCA$x[,1:2], col=lendKmeans$cluster, pch=lendKmeans$cluster)
 legend("topright", title = ,legend = 1:7, col = 1:7, pch =  1:7)
 ```
 
-![](PCA_wOutlier.png)<!-- -->
+![](PCA.png)<!-- -->
 
 ``` r
 # Rotation matrix for first 2 PCs
@@ -261,7 +261,7 @@ plot(lendPCA$x[,1:2], col=lendKmeans$cluster, pch=lendKmeans$cluster)
 legend("topright", title = ,legend = 1:7, col = 1:7, pch =  1:7)
 ```
 
-![](PCA.png)<!-- -->
+![](PCA_wOutlier.png)<!-- -->
 
 ``` r
 plot3d(lendPCA$x[,1:3], col=lendKmeans$cluster, pch=lendKmeans$cluster)
