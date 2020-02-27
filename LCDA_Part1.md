@@ -80,7 +80,7 @@ median(medianCol)
 
 ## Histograms and Boxplots
 
-![](images/histogram-1.png)<!-- -->![](images/histogram-2.png)<!-- -->
+![](histogram-1.png)<!-- -->![](histogram-2.png)<!-- -->
 
 ``` r
 # Creating a boxplot of interest rate (int_rate) for each loan status (loan_status) to find the status that has loans with the highest median interest rate  
@@ -88,7 +88,7 @@ median(medianCol)
 boxplot(lendingData$int_rate ~ lendingData$loan_status, col = 6, labels = TRUE, las = 2, par(mar=c(8,5,2,2)))
 ```
 
-![](images/unnamed-chunk-1-1.png)<!-- -->
+![](unnamed-chunk-1-1.png)<!-- -->
 
 ``` r
 # Verifying median values
