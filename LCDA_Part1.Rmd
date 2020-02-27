@@ -1,0 +1,82 @@
+---
+title: "Exploratory analysis on LendingClub dataset"
+author: "Akansha Chaudhari"
+date: "09/12/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+```{r Loading .rda file}
+library(ggplot2)
+library(dplyr)
+
+load("LoanStats2017Q3.rda")
+
+#Determining the mean and median of the borrowers' months since last public record (mths_since_last_record). Finding the number of observations for which this value is missing and creating a new variable where the value is imputed with the median.
+
+mean(lendingData$mths_since_last_record)
+
+# Counting number of nulls = 103863
+sum(is.na(lendingData$mths_since_last_record))
+
+# Calculating mean without NULL values = 75.79589
+mean(lendingData$mths_since_last_record, na.rm = TRUE)
+
+# Calculating the median without null values = 79
+median(lendingData$mths_since_last_record, na.rm = TRUE)
+
+# creating a new column for imputing median in place of NULL
+medianCol <- c(lendingData$mths_since_last_record)
+
+# Imputing median in the new column in place of NULLs
+medianCol[is.na(medianCol)] <- median(medianCol, na.rm = TRUE)
+
+# Counting NULLs after imputation = 0
+sum(is.na(medianCol))
+
+# Calculating mean = 78.50808 & median = 79 for the new column
+mean(medianCol)
+median(medianCol)
+```
+
+## Histograms and Boxplots
+
+```{r histogram, echo=FALSE}
+# Plotting a histogram of the settlement amount for loans (for those with a settlement) to determine if the distribution is skewed.  
+# creating a transformation of the settlement amount data and then plotting histogram of the result.  
+
+hist(lendingData$settlement_amount) # The histogram looks to be right skewed
+
+# The above histogram looks to be right skewed. Also, the column has a large range between $331.44 to $24102, it makes sense to do a log transformation to make it closer to a normal distribution
+
+logSettleamt <- log(lendingData$settlement_amount)
+hist(logSettleamt, labels=TRUE)
+
+# The below histogram appears to be close to a normal distribution
+
+```
+```{r}
+# Creating a boxplot of interest rate (int_rate) for each loan status (loan_status) to find the status that has loans with the highest median interest rate  
+
+boxplot(lendingData$int_rate ~ lendingData$loan_status, col = 6, labels = TRUE, las = 2, par(mar=c(8,5,2,2)))
+
+# Verifying median values
+
+lendingData %>%
+              dplyr::select(loan_status, int_rate) %>%
+              group_by(loan_status) %>%
+              summarize(medianVal = median(int_rate, na.rm = TRUE)) %>%
+              arrange(loan_status)
+              
+# Loan statuses: Charged Off, Default and Late (31-120 days) tend to have the highest median interest rates since these borrowers haven’t been able to pay their interests on time.
+# The interest rates for Fully Paid loans are lower than those of Charged Off ones.
+
+  
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
