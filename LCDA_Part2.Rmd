@@ -1,0 +1,121 @@
+---
+title: "ClusterAnalysis_PCA"
+author: "Akansha Chaudhari"
+date: "9/20/2020"
+output: rmarkdown::github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(fig.path = "images/")
+```
+
+## R Markdown
+
+```{r New DF}
+library(dplyr)
+library(dummies) # dummy variables
+library(cluster) # Clustering
+library(rgl) # 3d plot
+
+load("LoanStats2017Q3.rda")
+
+set.seed(12345)
+
+# Storing variables in vectors
+annualInc <- lendingData$annual_inc
+loan_amnt <- lendingData$loan_amnt
+empLength <- lendingData$emp_length
+homeOwnership <- lendingData$home_ownership
+dti <- lendingData$dti
+grade <- lendingData$grade
+
+
+# Removing the value 'n/a' from emp_length column and replacing it with NA
+empLength[empLength == 'n/a'] <- NA
+empLength <- addNA(empLength)
+
+# Storing all variables in a data frame
+tempDF <- data.frame(annualInc, loan_amnt, 
+                     dti, homeOwnership, empLength)
+
+# Checking for NULL values in the data frame and then imputing them with the median
+apply(is.na(tempDF),2,sum)
+
+tempDF$dti[is.na(tempDF$dti)] <-
+  median(tempDF$dti, na.rm=TRUE)
+
+head(tempDF)
+
+
+```
+
+
+```{r Binarization}
+# Creating a dummy data frame with categorical columns
+lendDF <- dummy.data.frame(tempDF, names=c("homeOwnership", "empLength"))
+
+head(lendDF)
+
+# Scaling the values in the data frame for clustering
+lendDF <- scale(lendDF, center=TRUE, scale=TRUE)
+head(lendDF)
+
+```
+
+
+```{r Clustering}
+# Performing Kmeans clustering
+lendKmeans <- kmeans(lendDF, centers=7)
+
+# Doing PCA analysis
+lendPCA <- prcomp(lendDF, retx=TRUE)
+plot(lendPCA$x[,1:2], col=lendKmeans$cluster, pch=lendKmeans$cluster)
+legend("topright", title = ,legend = 1:7, col = 1:7, pch =  1:7)
+
+
+# Rotation matrix for first 2 PCs
+lendPCA$rotation[,1:2]
+summary(lendPCA)
+```
+```{r PCA description}
+
+# • After inspecting the first two PCs. The variation on the first component is due to several related variables concerning the borrowers’ loan amount, homes that are mortgaged and borrowers employed for more than 10 years. Borrowers with larger values on the first component will have larger values for these variables.
+# •	The variation on the second component is due to the borrowers employed for less than a year and for 6 years, homes that are mortgaged, and debt-to-income ratio. Borrowers with larger values on the second component will have larger values for these variables.
+# •	The black cluster has negative values for PC1, indicating fewer rented homes and lesser number of borrowers employed between 1 to 4 years inclusive. The scores on PC2 are negative as well, indicating borrowers with lower annual income.
+# •	The pink cluster has positive values for PC1 than the black cluster, indicating a greater number of borrowers whose homes are mortgaged, have higher loan amounts and have been employed for more than 10 years. The scores on PC2 are near zero, indicating that the values are moderate compared to the rest of the data.
+# •	The yellow & cyan clusters overlap with the black cluster and the red & green clusters overlap with pink cluster. This indicates that the overlapping clusters have similar characteristics.
+# •	The blue cluster has the largest positive values for PC2 corresponding to larger number of borrowers with employment term < 1 year, higher mortgaged homes, higher debt-to-income ratio and higher annual income. 
+# •	In PC2, there is a trade-off between more borrowers with mortgaged homes and lesser owned homes. Another trade-off between more borrowers with lower employment length (< 1 year) and lower number of borrowers employed for 10+ years.
+# •	In PC1, there is a trade-off between mortgaged homes and lower number of borrowers with rented homes. Another trade-off between more borrowers employed (>10 years) and less borrowers employed from 1 to 4 years.
+# •	The outlier seems to affect strongly the first principal component.
+
+```
+
+```{r By Outlier detection}
+
+# Getting rid of the outlier
+#lendPCA$x[,1]
+which(lendPCA$x[,1] > 20)
+lendPCA$x[72164, 1]
+lendDF <- lendDF[-72164,]
+
+# Running Kmeans again and replotting
+lendKmeans <- kmeans(lendDF, centers=7)
+
+lendPCA <- prcomp(lendDF, retx=TRUE)
+plot(lendPCA$x[,1:2], col=lendKmeans$cluster, pch=lendKmeans$cluster)
+legend("topright", title = ,legend = 1:7, col = 1:7, pch =  1:7)
+
+plot3d(lendPCA$x[,1:3], col=lendKmeans$cluster, pch=lendKmeans$cluster)
+lendPCA$rotation[,1:3]
+```
+
+
+```{r desc after outlier removal}
+# Below is the PCA rotation matrix for first 3 PCs. PC3 is associated with borrowers’ loan amount, rented homes and employment length more than 10 years.
+# The positive variation in the third PC has to do with borrowers with higher rented homes, loan amount and number of borrowers with over 10years of employment. 
+# The negative variation in the third PC has to do with lower debt-to-income ratio and lesser number of borrowers with own homes.
+
+```
+
