@@ -1,0 +1,849 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<style type="text/css">
+@font-face {
+font-family: octicons-link;
+src: url(data:font/woff;charset=utf-8;base64,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) format('woff');
+}
+body {
+-webkit-text-size-adjust: 100%;
+text-size-adjust: 100%;
+color: #333;
+font-family: "Helvetica Neue", Helvetica, "Segoe UI", Arial, freesans, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+font-size: 16px;
+line-height: 1.6;
+word-wrap: break-word;
+}
+a {
+background-color: transparent;
+}
+a:active,
+a:hover {
+outline: 0;
+}
+strong {
+font-weight: bold;
+}
+h1 {
+font-size: 2em;
+margin: 0.67em 0;
+}
+img {
+border: 0;
+}
+hr {
+box-sizing: content-box;
+height: 0;
+}
+pre {
+overflow: auto;
+}
+code,
+kbd,
+pre {
+font-family: monospace, monospace;
+font-size: 1em;
+}
+input {
+color: inherit;
+font: inherit;
+margin: 0;
+}
+html input[disabled] {
+cursor: default;
+}
+input {
+line-height: normal;
+}
+input[type="checkbox"] {
+box-sizing: border-box;
+padding: 0;
+}
+table {
+border-collapse: collapse;
+border-spacing: 0;
+}
+td,
+th {
+padding: 0;
+}
+* {
+box-sizing: border-box;
+}
+input {
+font: 13px / 1.4 Helvetica, arial, nimbussansl, liberationsans, freesans, clean, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+}
+a {
+color: #4078c0;
+text-decoration: none;
+}
+a:hover,
+a:active {
+text-decoration: underline;
+}
+hr {
+height: 0;
+margin: 15px 0;
+overflow: hidden;
+background: transparent;
+border: 0;
+border-bottom: 1px solid #ddd;
+}
+hr:before {
+display: table;
+content: "";
+}
+hr:after {
+display: table;
+clear: both;
+content: "";
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+margin-top: 15px;
+margin-bottom: 15px;
+line-height: 1.1;
+}
+h1 {
+font-size: 30px;
+}
+h2 {
+font-size: 21px;
+}
+h3 {
+font-size: 16px;
+}
+h4 {
+font-size: 14px;
+}
+h5 {
+font-size: 12px;
+}
+h6 {
+font-size: 11px;
+}
+blockquote {
+margin: 0;
+}
+ul,
+ol {
+padding: 0;
+margin-top: 0;
+margin-bottom: 0;
+}
+ol ol,
+ul ol {
+list-style-type: lower-roman;
+}
+ul ul ol,
+ul ol ol,
+ol ul ol,
+ol ol ol {
+list-style-type: lower-alpha;
+}
+dd {
+margin-left: 0;
+}
+code {
+font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace;
+font-size: 12px;
+}
+pre {
+margin-top: 0;
+margin-bottom: 0;
+font: 12px Consolas, "Liberation Mono", Menlo, Courier, monospace;
+}
+.select::-ms-expand {
+opacity: 0;
+}
+.octicon {
+font: normal normal normal 16px/1 octicons-link;
+display: inline-block;
+text-decoration: none;
+text-rendering: auto;
+-webkit-font-smoothing: antialiased;
+-moz-osx-font-smoothing: grayscale;
+-webkit-user-select: none;
+-moz-user-select: none;
+-ms-user-select: none;
+user-select: none;
+}
+.octicon-link:before {
+content: '\f05c';
+}
+.markdown-body:before {
+display: table;
+content: "";
+}
+.markdown-body:after {
+display: table;
+clear: both;
+content: "";
+}
+.markdown-body>*:first-child {
+margin-top: 0 !important;
+}
+.markdown-body>*:last-child {
+margin-bottom: 0 !important;
+}
+a:not([href]) {
+color: inherit;
+text-decoration: none;
+}
+.anchor {
+display: inline-block;
+padding-right: 2px;
+margin-left: -18px;
+}
+.anchor:focus {
+outline: none;
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+margin-top: 1em;
+margin-bottom: 16px;
+font-weight: bold;
+line-height: 1.4;
+}
+h1 .octicon-link,
+h2 .octicon-link,
+h3 .octicon-link,
+h4 .octicon-link,
+h5 .octicon-link,
+h6 .octicon-link {
+color: #000;
+vertical-align: middle;
+visibility: hidden;
+}
+h1:hover .anchor,
+h2:hover .anchor,
+h3:hover .anchor,
+h4:hover .anchor,
+h5:hover .anchor,
+h6:hover .anchor {
+text-decoration: none;
+}
+h1:hover .anchor .octicon-link,
+h2:hover .anchor .octicon-link,
+h3:hover .anchor .octicon-link,
+h4:hover .anchor .octicon-link,
+h5:hover .anchor .octicon-link,
+h6:hover .anchor .octicon-link {
+visibility: visible;
+}
+h1 {
+padding-bottom: 0.3em;
+font-size: 2.25em;
+line-height: 1.2;
+border-bottom: 1px solid #eee;
+}
+h1 .anchor {
+line-height: 1;
+}
+h2 {
+padding-bottom: 0.3em;
+font-size: 1.75em;
+line-height: 1.225;
+border-bottom: 1px solid #eee;
+}
+h2 .anchor {
+line-height: 1;
+}
+h3 {
+font-size: 1.5em;
+line-height: 1.43;
+}
+h3 .anchor {
+line-height: 1.2;
+}
+h4 {
+font-size: 1.25em;
+}
+h4 .anchor {
+line-height: 1.2;
+}
+h5 {
+font-size: 1em;
+}
+h5 .anchor {
+line-height: 1.1;
+}
+h6 {
+font-size: 1em;
+color: #777;
+}
+h6 .anchor {
+line-height: 1.1;
+}
+p,
+blockquote,
+ul,
+ol,
+dl,
+table,
+pre {
+margin-top: 0;
+margin-bottom: 16px;
+}
+hr {
+height: 4px;
+padding: 0;
+margin: 16px 0;
+background-color: #e7e7e7;
+border: 0 none;
+}
+ul,
+ol {
+padding-left: 2em;
+}
+ul ul,
+ul ol,
+ol ol,
+ol ul {
+margin-top: 0;
+margin-bottom: 0;
+}
+li>p {
+margin-top: 16px;
+}
+dl {
+padding: 0;
+}
+dl dt {
+padding: 0;
+margin-top: 16px;
+font-size: 1em;
+font-style: italic;
+font-weight: bold;
+}
+dl dd {
+padding: 0 16px;
+margin-bottom: 16px;
+}
+blockquote {
+padding: 0 15px;
+color: #777;
+border-left: 4px solid #ddd;
+}
+blockquote>:first-child {
+margin-top: 0;
+}
+blockquote>:last-child {
+margin-bottom: 0;
+}
+table {
+display: block;
+width: 100%;
+overflow: auto;
+word-break: normal;
+word-break: keep-all;
+}
+table th {
+font-weight: bold;
+}
+table th,
+table td {
+padding: 6px 13px;
+border: 1px solid #ddd;
+}
+table tr {
+background-color: #fff;
+border-top: 1px solid #ccc;
+}
+table tr:nth-child(2n) {
+background-color: #f8f8f8;
+}
+img {
+max-width: 100%;
+box-sizing: content-box;
+background-color: #fff;
+}
+code {
+padding: 0;
+padding-top: 0.2em;
+padding-bottom: 0.2em;
+margin: 0;
+font-size: 85%;
+background-color: rgba(0,0,0,0.04);
+border-radius: 3px;
+}
+code:before,
+code:after {
+letter-spacing: -0.2em;
+content: "\00a0";
+}
+pre>code {
+padding: 0;
+margin: 0;
+font-size: 100%;
+word-break: normal;
+white-space: pre;
+background: transparent;
+border: 0;
+}
+.highlight {
+margin-bottom: 16px;
+}
+.highlight pre,
+pre {
+padding: 16px;
+overflow: auto;
+font-size: 85%;
+line-height: 1.45;
+background-color: #f7f7f7;
+border-radius: 3px;
+}
+.highlight pre {
+margin-bottom: 0;
+word-break: normal;
+}
+pre {
+word-wrap: normal;
+}
+pre code {
+display: inline;
+max-width: initial;
+padding: 0;
+margin: 0;
+overflow: initial;
+line-height: inherit;
+word-wrap: normal;
+background-color: transparent;
+border: 0;
+}
+pre code:before,
+pre code:after {
+content: normal;
+}
+kbd {
+display: inline-block;
+padding: 3px 5px;
+font-size: 11px;
+line-height: 10px;
+color: #555;
+vertical-align: middle;
+background-color: #fcfcfc;
+border: solid 1px #ccc;
+border-bottom-color: #bbb;
+border-radius: 3px;
+box-shadow: inset 0 -1px 0 #bbb;
+}
+.pl-c {
+color: #969896;
+}
+.pl-c1,
+.pl-s .pl-v {
+color: #0086b3;
+}
+.pl-e,
+.pl-en {
+color: #795da3;
+}
+.pl-s .pl-s1,
+.pl-smi {
+color: #333;
+}
+.pl-ent {
+color: #63a35c;
+}
+.pl-k {
+color: #a71d5d;
+}
+.pl-pds,
+.pl-s,
+.pl-s .pl-pse .pl-s1,
+.pl-sr,
+.pl-sr .pl-cce,
+.pl-sr .pl-sra,
+.pl-sr .pl-sre {
+color: #183691;
+}
+.pl-v {
+color: #ed6a43;
+}
+.pl-id {
+color: #b52a1d;
+}
+.pl-ii {
+background-color: #b52a1d;
+color: #f8f8f8;
+}
+.pl-sr .pl-cce {
+color: #63a35c;
+font-weight: bold;
+}
+.pl-ml {
+color: #693a17;
+}
+.pl-mh,
+.pl-mh .pl-en,
+.pl-ms {
+color: #1d3e81;
+font-weight: bold;
+}
+.pl-mq {
+color: #008080;
+}
+.pl-mi {
+color: #333;
+font-style: italic;
+}
+.pl-mb {
+color: #333;
+font-weight: bold;
+}
+.pl-md {
+background-color: #ffecec;
+color: #bd2c00;
+}
+.pl-mi1 {
+background-color: #eaffea;
+color: #55a532;
+}
+.pl-mdr {
+color: #795da3;
+font-weight: bold;
+}
+.pl-mo {
+color: #1d3e81;
+}
+kbd {
+display: inline-block;
+padding: 3px 5px;
+font: 11px Consolas, "Liberation Mono", Menlo, Courier, monospace;
+line-height: 10px;
+color: #555;
+vertical-align: middle;
+background-color: #fcfcfc;
+border: solid 1px #ccc;
+border-bottom-color: #bbb;
+border-radius: 3px;
+box-shadow: inset 0 -1px 0 #bbb;
+}
+.task-list-item {
+list-style-type: none;
+}
+.task-list-item+.task-list-item {
+margin-top: 3px;
+}
+.task-list-item input {
+margin: 0 0.35em 0.25em -1.6em;
+vertical-align: middle;
+}
+:checked+.radio-label {
+z-index: 1;
+position: relative;
+border-color: #4078c0;
+}
+.sourceLine {
+display: inline-block;
+}
+code .kw { color: #000000; }
+code .dt { color: #ed6a43; }
+code .dv { color: #009999; }
+code .bn { color: #009999; }
+code .fl { color: #009999; }
+code .ch { color: #009999; }
+code .st { color: #183691; }
+code .co { color: #969896; }
+code .ot { color: #0086b3; }
+code .al { color: #a61717; }
+code .fu { color: #63a35c; }
+code .er { color: #a61717; background-color: #e3d2d2; }
+code .wa { color: #000000; }
+code .cn { color: #008080; }
+code .sc { color: #008080; }
+code .vs { color: #183691; }
+code .ss { color: #183691; }
+code .im { color: #000000; }
+code .va {color: #008080; }
+code .cf { color: #000000; }
+code .op { color: #000000; }
+code .bu { color: #000000; }
+code .ex { color: #000000; }
+code .pp { color: #999999; }
+code .at { color: #008080; }
+code .do { color: #969896; }
+code .an { color: #008080; }
+code .cv { color: #008080; }
+code .in { color: #008080; }
+</style>
+<style>
+body {
+  box-sizing: border-box;
+  min-width: 200px;
+  max-width: 980px;
+  margin: 0 auto;
+  padding: 45px;
+  padding-top: 0px;
+}
+</style>
+
+</head>
+
+<body>
+
+<h1 id="clusteranalysis_pca">ClusterAnalysis_PCA</h1>
+<p>Akansha Chaudhari 9/20/2020</p>
+<h2 id="r-markdown">R Markdown</h2>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" title="1"><span class="kw">library</span>(dplyr)</a></code></pre></div>
+<pre><code>## 
+## Attaching package: &#39;dplyr&#39;
+
+## The following objects are masked from &#39;package:stats&#39;:
+## 
+##     filter, lag
+
+## The following objects are masked from &#39;package:base&#39;:
+## 
+##     intersect, setdiff, setequal, union
+</code></pre>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" title="1"><span class="kw">library</span>(dummies) <span class="co"># dummy variables</span></a></code></pre></div>
+<pre><code>## dummies-1.5.6 provided by Decision Patterns
+</code></pre>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" title="1"><span class="kw">library</span>(cluster) <span class="co"># Clustering</span></a>
+<a class="sourceLine" id="cb5-2" title="2"><span class="kw">library</span>(rgl) <span class="co"># 3d plot</span></a>
+<a class="sourceLine" id="cb5-3" title="3"></a>
+<a class="sourceLine" id="cb5-4" title="4"><span class="kw">load</span>(<span class="st">&quot;LoanStats2017Q3.rda&quot;</span>)</a>
+<a class="sourceLine" id="cb5-5" title="5"></a>
+<a class="sourceLine" id="cb5-6" title="6"><span class="kw">set.seed</span>(<span class="dv">12345</span>)</a>
+<a class="sourceLine" id="cb5-7" title="7"></a>
+<a class="sourceLine" id="cb5-8" title="8"><span class="co"># Storing variables in vectors</span></a>
+<a class="sourceLine" id="cb5-9" title="9">annualInc &lt;-<span class="st"> </span>lendingData<span class="op">$</span>annual_inc</a>
+<a class="sourceLine" id="cb5-10" title="10">loan_amnt &lt;-<span class="st"> </span>lendingData<span class="op">$</span>loan_amnt</a>
+<a class="sourceLine" id="cb5-11" title="11">empLength &lt;-<span class="st"> </span>lendingData<span class="op">$</span>emp_length</a>
+<a class="sourceLine" id="cb5-12" title="12">homeOwnership &lt;-<span class="st"> </span>lendingData<span class="op">$</span>home_ownership</a>
+<a class="sourceLine" id="cb5-13" title="13">dti &lt;-<span class="st"> </span>lendingData<span class="op">$</span>dti</a>
+<a class="sourceLine" id="cb5-14" title="14">grade &lt;-<span class="st"> </span>lendingData<span class="op">$</span>grade</a>
+<a class="sourceLine" id="cb5-15" title="15"></a>
+<a class="sourceLine" id="cb5-16" title="16"></a>
+<a class="sourceLine" id="cb5-17" title="17"><span class="co"># Removing the value &#39;n/a&#39; from emp_length column and replacing it with NA</span></a>
+<a class="sourceLine" id="cb5-18" title="18">empLength[empLength <span class="op">==</span><span class="st"> &#39;n/a&#39;</span>] &lt;-<span class="st"> </span><span class="ot">NA</span></a>
+<a class="sourceLine" id="cb5-19" title="19">empLength &lt;-<span class="st"> </span><span class="kw">addNA</span>(empLength)</a>
+<a class="sourceLine" id="cb5-20" title="20"></a>
+<a class="sourceLine" id="cb5-21" title="21"><span class="co"># Storing all variables in a data frame</span></a>
+<a class="sourceLine" id="cb5-22" title="22">tempDF &lt;-<span class="st"> </span><span class="kw">data.frame</span>(annualInc, loan_amnt, </a>
+<a class="sourceLine" id="cb5-23" title="23">                     dti, homeOwnership, empLength)</a>
+<a class="sourceLine" id="cb5-24" title="24"></a>
+<a class="sourceLine" id="cb5-25" title="25"><span class="co"># Checking for NULL values in the data frame and then imputing them with the median</span></a>
+<a class="sourceLine" id="cb5-26" title="26"><span class="kw">apply</span>(<span class="kw">is.na</span>(tempDF),<span class="dv">2</span>,sum)</a></code></pre></div>
+<pre><code>##     annualInc     loan_amnt           dti homeOwnership     empLength 
+##             0             0           184             0             0
+</code></pre>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" title="1">tempDF<span class="op">$</span>dti[<span class="kw">is.na</span>(tempDF<span class="op">$</span>dti)] &lt;-</a>
+<a class="sourceLine" id="cb7-2" title="2"><span class="st">  </span><span class="kw">median</span>(tempDF<span class="op">$</span>dti, <span class="dt">na.rm=</span><span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb7-3" title="3"></a>
+<a class="sourceLine" id="cb7-4" title="4"><span class="kw">head</span>(tempDF)</a></code></pre></div>
+<pre><code>##   annualInc loan_amnt   dti homeOwnership empLength
+## 1     42000     12000 27.74           OWN 10+ years
+## 2     79077     16000 15.94          RENT   5 years
+## 3    107000     33000 19.06      MORTGAGE  &lt; 1 year
+## 4    155000     32000 12.35      MORTGAGE 10+ years
+## 5    120000     40000 31.11      MORTGAGE   9 years
+## 6     32000      7000 12.27          RENT 10+ years
+</code></pre>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" title="1"><span class="co"># Creating a dummy data frame with categorical columns</span></a>
+<a class="sourceLine" id="cb9-2" title="2">lendDF &lt;-<span class="st"> </span><span class="kw">dummy.data.frame</span>(tempDF, <span class="dt">names=</span><span class="kw">c</span>(<span class="st">&quot;homeOwnership&quot;</span>, <span class="st">&quot;empLength&quot;</span>))</a></code></pre></div>
+<pre><code>## Warning in model.matrix.default(~x - 1, model.frame(~x - 1), contrasts = FALSE):
+## non-list contrasts argument ignored
+
+## Warning in model.matrix.default(~x - 1, model.frame(~x - 1), contrasts = FALSE):
+## non-list contrasts argument ignored
+</code></pre>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" title="1"><span class="kw">head</span>(lendDF)</a></code></pre></div>
+<pre><code>##   annualInc loan_amnt   dti homeOwnershipANY homeOwnershipMORTGAGE
+## 1     42000     12000 27.74                0                     0
+## 2     79077     16000 15.94                0                     0
+## 3    107000     33000 19.06                0                     1
+## 4    155000     32000 12.35                0                     1
+## 5    120000     40000 31.11                0                     1
+## 6     32000      7000 12.27                0                     0
+##   homeOwnershipNONE homeOwnershipOWN homeOwnershipRENT empLength&lt; 1 year
+## 1                 0                1                 0                 0
+## 2                 0                0                 1                 0
+## 3                 0                0                 0                 1
+## 4                 0                0                 0                 0
+## 5                 0                0                 0                 0
+## 6                 0                0                 1                 0
+##   empLength1 year empLength10+ years empLength2 years empLength3 years
+## 1               0                  1                0                0
+## 2               0                  0                0                0
+## 3               0                  0                0                0
+## 4               0                  1                0                0
+## 5               0                  0                0                0
+## 6               0                  1                0                0
+##   empLength4 years empLength5 years empLength6 years empLength7 years
+## 1                0                0                0                0
+## 2                0                1                0                0
+## 3                0                0                0                0
+## 4                0                0                0                0
+## 5                0                0                0                0
+## 6                0                0                0                0
+##   empLength8 years empLength9 years empLengthNA
+## 1                0                0           0
+## 2                0                0           0
+## 3                0                0           0
+## 4                0                0           0
+## 5                0                1           0
+## 6                0                0           0
+</code></pre>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" title="1"><span class="co"># Scaling the values in the data frame for clustering</span></a>
+<a class="sourceLine" id="cb13-2" title="2">lendDF &lt;-<span class="st"> </span><span class="kw">scale</span>(lendDF, <span class="dt">center=</span><span class="ot">TRUE</span>, <span class="dt">scale=</span><span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb13-3" title="3"><span class="kw">head</span>(lendDF)</a></code></pre></div>
+<pre><code>##       annualInc  loan_amnt         dti homeOwnershipANY homeOwnershipMORTGAGE
+## 1 -0.1149444060 -0.2702472  0.39399388     -0.008074829            -0.9699266
+## 2  0.0002058191  0.1458219 -0.18034054     -0.008074829            -0.9699266
+## 3  0.0869264204  1.9141156 -0.02848262     -0.008074829             1.0309975
+## 4  0.2360002614  1.8100983 -0.35507448     -0.008074829             1.0309975
+## 5  0.1273005856  2.6422365  0.55801989     -0.008074829             1.0309975
+## 6 -0.1460014562 -0.7903336 -0.35896827     -0.008074829            -0.9699266
+##   homeOwnershipNONE homeOwnershipOWN homeOwnershipRENT empLength&lt; 1 year
+## 1      -0.002854802        2.7746053        -0.8168759         -0.363390
+## 2      -0.002854802       -0.3604087         1.2241661         -0.363390
+## 3      -0.002854802       -0.3604087        -0.8168759          2.751842
+## 4      -0.002854802       -0.3604087        -0.8168759         -0.363390
+## 5      -0.002854802       -0.3604087        -0.8168759         -0.363390
+## 6      -0.002854802       -0.3604087         1.2241661         -0.363390
+##   empLength1 year empLength10+ years empLength2 years empLength3 years
+## 1      -0.2636353          1.4603381       -0.3126643       -0.2885988
+## 2      -0.2636353         -0.6847673       -0.3126643       -0.2885988
+## 3      -0.2636353         -0.6847673       -0.3126643       -0.2885988
+## 4      -0.2636353          1.4603381       -0.3126643       -0.2885988
+## 5      -0.2636353         -0.6847673       -0.3126643       -0.2885988
+## 6      -0.2636353          1.4603381       -0.3126643       -0.2885988
+##   empLength4 years empLength5 years empLength6 years empLength7 years
+## 1        -0.256473        -0.250409       -0.2100718       -0.1956559
+## 2        -0.256473         3.993435       -0.2100718       -0.1956559
+## 3        -0.256473        -0.250409       -0.2100718       -0.1956559
+## 4        -0.256473        -0.250409       -0.2100718       -0.1956559
+## 5        -0.256473        -0.250409       -0.2100718       -0.1956559
+## 6        -0.256473        -0.250409       -0.2100718       -0.1956559
+##   empLength8 years empLength9 years empLengthNA
+## 1         -0.16981       -0.1896957  -0.2755667
+## 2         -0.16981       -0.1896957  -0.2755667
+## 3         -0.16981       -0.1896957  -0.2755667
+## 4         -0.16981       -0.1896957  -0.2755667
+## 5         -0.16981        5.2715566  -0.2755667
+## 6         -0.16981       -0.1896957  -0.2755667
+</code></pre>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb15-1" title="1"><span class="co"># Performing Kmeans clustering</span></a>
+<a class="sourceLine" id="cb15-2" title="2">lendKmeans &lt;-<span class="st"> </span><span class="kw">kmeans</span>(lendDF, <span class="dt">centers=</span><span class="dv">7</span>)</a>
+<a class="sourceLine" id="cb15-3" title="3"></a>
+<a class="sourceLine" id="cb15-4" title="4"><span class="co"># Doing PCA analysis</span></a>
+<a class="sourceLine" id="cb15-5" title="5">lendPCA &lt;-<span class="st"> </span><span class="kw">prcomp</span>(lendDF, <span class="dt">retx=</span><span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb15-6" title="6"><span class="kw">plot</span>(lendPCA<span class="op">$</span>x[,<span class="dv">1</span><span class="op">:</span><span class="dv">2</span>], <span class="dt">col=</span>lendKmeans<span class="op">$</span>cluster, <span class="dt">pch=</span>lendKmeans<span class="op">$</span>cluster)</a>
+<a class="sourceLine" id="cb15-7" title="7"><span class="kw">legend</span>(<span class="st">&quot;topright&quot;</span>, <span class="dt">title =</span> ,<span class="dt">legend =</span> <span class="dv">1</span><span class="op">:</span><span class="dv">7</span>, <span class="dt">col =</span> <span class="dv">1</span><span class="op">:</span><span class="dv">7</span>, <span class="dt">pch =</span>  <span class="dv">1</span><span class="op">:</span><span class="dv">7</span>)</a></code></pre></div>
+<p><img src="data:image/png;base64,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" /><!-- --></p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb16-1" title="1"><span class="co"># Rotation matrix for first 2 PCs</span></a>
+<a class="sourceLine" id="cb16-2" title="2">lendPCA<span class="op">$</span>rotation[,<span class="dv">1</span><span class="op">:</span><span class="dv">2</span>]</a></code></pre></div>
+<pre><code>##                                PC1          PC2
+## annualInc              0.061042681 -0.016995412
+## loan_amnt              0.269090193  0.179204905
+## dti                    0.063038509  0.195250523
+## homeOwnershipANY      -0.003757898  0.005487485
+## homeOwnershipMORTGAGE  0.634478287  0.247075768
+## homeOwnershipNONE     -0.001164800 -0.001968247
+## homeOwnershipOWN      -0.046104282 -0.423947441
+## homeOwnershipRENT     -0.617114633  0.023901256
+## empLength&lt; 1 year     -0.002269023  0.458873341
+## empLength1 year       -0.130646715  0.040961336
+## empLength10+ years     0.287971605 -0.647021527
+## empLength2 years      -0.128632358  0.075200216
+## empLength3 years      -0.098845568  0.076617349
+## empLength4 years      -0.069703845  0.074853769
+## empLength5 years      -0.044876646  0.086490324
+## empLength6 years      -0.017936943  0.103554449
+## empLength7 years      -0.011065154  0.087224445
+## empLength8 years      -0.003133917  0.074989097
+## empLength9 years       0.009005405  0.092448604
+## empLengthNA           -0.025108522 -0.010037250
+</code></pre>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb18-1" title="1"><span class="kw">summary</span>(lendPCA)</a></code></pre></div>
+<pre><code>## Importance of components:
+##                            PC1    PC2     PC3     PC4     PC5     PC6     PC7
+## Standard deviation     1.40804 1.1428 1.12931 1.06944 1.04506 1.04341 1.03802
+## Proportion of Variance 0.09913 0.0653 0.06377 0.05719 0.05461 0.05444 0.05387
+## Cumulative Proportion  0.09913 0.1644 0.22820 0.28538 0.33999 0.39442 0.44830
+##                            PC8     PC9    PC10    PC11    PC12    PC13    PC14
+## Standard deviation     1.03267 1.03082 1.02184 1.01897 1.01567 1.01301 1.00245
+## Proportion of Variance 0.05332 0.05313 0.05221 0.05192 0.05158 0.05131 0.05025
+## Cumulative Proportion  0.50162 0.55475 0.60696 0.65887 0.71045 0.76176 0.81200
+##                           PC15    PC16    PC17    PC18      PC19      PC20
+## Standard deviation     0.99940 0.99819 0.96982 0.90785 1.056e-14 9.797e-15
+## Proportion of Variance 0.04994 0.04982 0.04703 0.04121 0.000e+00 0.000e+00
+## Cumulative Proportion  0.86194 0.91176 0.95879 1.00000 1.000e+00 1.000e+00
+</code></pre>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb20-1" title="1"><span class="co"># • After inspecting the first two PCs. The variation on the first component is due to several related variables concerning the borrowers’ loan amount, homes that are mortgaged and borrowers employed for more than 10 years. Borrowers with larger values on the first component will have larger values for these variables.</span></a>
+<a class="sourceLine" id="cb20-2" title="2"><span class="co"># • The variation on the second component is due to the borrowers employed for less than a year and for 6 years, homes that are mortgaged, and debt-to-income ratio. Borrowers with larger values on the second component will have larger values for these variables.</span></a>
+<a class="sourceLine" id="cb20-3" title="3"><span class="co"># • The black cluster has negative values for PC1, indicating fewer rented homes and lesser number of borrowers employed between 1 to 4 years inclusive. The scores on PC2 are negative as well, indicating borrowers with lower annual income.</span></a>
+<a class="sourceLine" id="cb20-4" title="4"><span class="co"># • The pink cluster has positive values for PC1 than the black cluster, indicating a greater number of borrowers whose homes are mortgaged, have higher loan amounts and have been employed for more than 10 years. The scores on PC2 are near zero, indicating that the values are moderate compared to the rest of the data.</span></a>
+<a class="sourceLine" id="cb20-5" title="5"><span class="co"># • The yellow &amp; cyan clusters overlap with the black cluster and the red &amp; green clusters overlap with pink cluster. This indicates that the overlapping clusters have similar characteristics.</span></a>
+<a class="sourceLine" id="cb20-6" title="6"><span class="co"># • The blue cluster has the largest positive values for PC2 corresponding to larger number of borrowers with employment term &lt; 1 year, higher mortgaged homes, higher debt-to-income ratio and higher annual income. </span></a>
+<a class="sourceLine" id="cb20-7" title="7"><span class="co"># • In PC2, there is a trade-off between more borrowers with mortgaged homes and lesser owned homes. Another trade-off between more borrowers with lower employment length (&lt; 1 year) and lower number of borrowers employed for 10+ years.</span></a>
+<a class="sourceLine" id="cb20-8" title="8"><span class="co"># • In PC1, there is a trade-off between mortgaged homes and lower number of borrowers with rented homes. Another trade-off between more borrowers employed (&gt;10 years) and less borrowers employed from 1 to 4 years.</span></a>
+<a class="sourceLine" id="cb20-9" title="9"><span class="co"># • The outlier seems to affect strongly the first principal component.</span></a></code></pre></div>
+<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb21-1" title="1"><span class="co"># Getting rid of the outlier</span></a>
+<a class="sourceLine" id="cb21-2" title="2"><span class="co">#lendPCA$x[,1]</span></a>
+<a class="sourceLine" id="cb21-3" title="3"><span class="kw">which</span>(lendPCA<span class="op">$</span>x[,<span class="dv">1</span>] <span class="op">&gt;</span><span class="st"> </span><span class="dv">20</span>)</a></code></pre></div>
+<pre><code>## 72164 
+## 72164
+</code></pre>
+<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb23-1" title="1">lendPCA<span class="op">$</span>x[<span class="dv">72164</span>, <span class="dv">1</span>]</a></code></pre></div>
+<pre><code>## [1] 20.42088
+</code></pre>
+<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb25-1" title="1">lendDF &lt;-<span class="st"> </span>lendDF[<span class="op">-</span><span class="dv">72164</span>,]</a>
+<a class="sourceLine" id="cb25-2" title="2"></a>
+<a class="sourceLine" id="cb25-3" title="3"><span class="co"># Running Kmeans again and replotting</span></a>
+<a class="sourceLine" id="cb25-4" title="4">lendKmeans &lt;-<span class="st"> </span><span class="kw">kmeans</span>(lendDF, <span class="dt">centers=</span><span class="dv">7</span>)</a>
+<a class="sourceLine" id="cb25-5" title="5"></a>
+<a class="sourceLine" id="cb25-6" title="6">lendPCA &lt;-<span class="st"> </span><span class="kw">prcomp</span>(lendDF, <span class="dt">retx=</span><span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb25-7" title="7"><span class="kw">plot</span>(lendPCA<span class="op">$</span>x[,<span class="dv">1</span><span class="op">:</span><span class="dv">2</span>], <span class="dt">col=</span>lendKmeans<span class="op">$</span>cluster, <span class="dt">pch=</span>lendKmeans<span class="op">$</span>cluster)</a>
+<a class="sourceLine" id="cb25-8" title="8"><span class="kw">legend</span>(<span class="st">&quot;topright&quot;</span>, <span class="dt">title =</span> ,<span class="dt">legend =</span> <span class="dv">1</span><span class="op">:</span><span class="dv">7</span>, <span class="dt">col =</span> <span class="dv">1</span><span class="op">:</span><span class="dv">7</span>, <span class="dt">pch =</span>  <span class="dv">1</span><span class="op">:</span><span class="dv">7</span>)</a></code></pre></div>
+<p><img src="data:image/png;base64,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" /><!-- --></p>
+<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb26-1" title="1"><span class="kw">plot3d</span>(lendPCA<span class="op">$</span>x[,<span class="dv">1</span><span class="op">:</span><span class="dv">3</span>], <span class="dt">col=</span>lendKmeans<span class="op">$</span>cluster, <span class="dt">pch=</span>lendKmeans<span class="op">$</span>cluster)</a>
+<a class="sourceLine" id="cb26-2" title="2">lendPCA<span class="op">$</span>rotation[,<span class="dv">1</span><span class="op">:</span><span class="dv">3</span>]</a></code></pre></div>
+<pre><code>##                                PC1           PC2          PC3
+## annualInc              0.031617716 -0.0008315871  0.028532744
+## loan_amnt              0.267672066  0.1832264396  0.115086885
+## dti                    0.064235286  0.1896985757 -0.249456961
+## homeOwnershipANY      -0.003734964  0.0049164790 -0.033920042
+## homeOwnershipMORTGAGE  0.635696955  0.2469606171  0.069240871
+## homeOwnershipNONE     -0.001156300 -0.0023847493 -0.024727648
+## homeOwnershipOWN      -0.045806272 -0.4334673269 -0.589004430
+## homeOwnershipRENT     -0.618552181  0.0302284478  0.313543643
+## empLength&lt; 1 year     -0.001797284  0.4576296418 -0.058412021
+## empLength1 year       -0.130963768  0.0422715290  0.055130890
+## empLength10+ years     0.287725982 -0.6416129898  0.363060034
+## empLength2 years      -0.128941170  0.0763491979  0.039146531
+## empLength3 years      -0.099034453  0.0770658747  0.008655596
+## empLength4 years      -0.069874577  0.0751682623 -0.003951253
+## empLength5 years      -0.044999307  0.0863378060 -0.037230429
+## empLength6 years      -0.018064151  0.1038335394 -0.007034248
+## empLength7 years      -0.011167098  0.0871645368 -0.027346571
+## empLength8 years      -0.003164955  0.0746941318 -0.032580385
+## empLength9 years       0.008960206  0.0919692402 -0.052628954
+## empLengthNA           -0.023907131 -0.0211256891 -0.570980121
+</code></pre>
+<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb28-1" title="1"><span class="co"># Below is the PCA rotation matrix for first 3 PCs. PC3 is associated with borrowers’ loan amount, rented homes and employment length more than 10 years.</span></a>
+<a class="sourceLine" id="cb28-2" title="2"><span class="co"># The positive variation in the third PC has to do with borrowers with higher rented homes, loan amount and number of borrowers with over 10years of employment. </span></a>
+<a class="sourceLine" id="cb28-3" title="3"><span class="co"># The negative variation in the third PC has to do with lower debt-to-income ratio and lesser number of borrowers with own homes.</span></a></code></pre></div>
+
+</body>
+</html>
