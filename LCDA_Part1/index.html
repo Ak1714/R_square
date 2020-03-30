@@ -8,7 +8,7 @@
         
         
         <link rel="shortcut icon" href="../img/favicon.ico">
-        <title>Vizualizing Data - Analysis of LendingClub Data</title>
+        <title>Vizualizing Data - Analysis of Lending Club Loan Data</title>
         <link href="../css/bootstrap.min.css" rel="stylesheet">
         <link href="../css/font-awesome.min.css" rel="stylesheet">
         <link href="../css/base.css" rel="stylesheet">
@@ -23,7 +23,7 @@
     <body>
         <div class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
             <div class="container">
-                <a class="navbar-brand" href="..">Analysis of LendingClub Data</a>
+                <a class="navbar-brand" href="..">Analysis of Lending Club Loan Data</a>
                 <!-- Expander button -->
                 <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbar-collapse">
                     <span class="navbar-toggler-icon"></span>
@@ -81,21 +81,37 @@
     <div id="toc-collapse" class="navbar-collapse collapse card bg-secondary">
         <ul class="nav flex-column">
             
+            <li class="nav-item" data-level="2"><a href="#importing-packages" class="nav-link">Importing packages</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
             
+            <li class="nav-item" data-level="2"><a href="#exploratory-analysis" class="nav-link">Exploratory analysis</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
             
+            <li class="nav-item" data-level="2"><a href="#histogram" class="nav-link">Histogram</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
             
+            <li class="nav-item" data-level="2"><a href="#boxplot" class="nav-link">Boxplot</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
         </ul>
     </div>
 </div></div>
                     <div class="col-md-9" role="main">
 
 <p><b>Exploratory analysis and visualizing to get a feel of the distribution patterns </b></p>
-<h3 id="importing-packages">Importing packages</h3>
+<h2 id="importing-packages">Importing packages</h2>
 <pre><code class="r">library(ggplot2)
 library(dplyr)
 </code></pre>
 
-<h3 id="exploratory-analysis">Exploratory analysis</h3>
+<h2 id="exploratory-analysis">Exploratory analysis</h2>
 <p>Determining the mean and median of the borrowers' months since last public record (mths_since_last_record). Finding the number of observations for which this value is missing and creating a new variable where the value is imputed with the median.</p>
 <pre><code class="r">load(&quot;LoanStats2017Q3.rda&quot;)
 mean(lendingData$mths_since_last_record)
@@ -142,7 +158,7 @@ sum(is.na(medianCol))
 
 <pre><code>## [1] 79
 </code></pre>
-<h3 id="histogram">Histogram</h3>
+<h2 id="histogram">Histogram</h2>
 <p>We plot a histogram for the settlement amount for loans using the function hist();</p>
 <pre><code class="r">hist(lendingData$settlement_amount)
 </code></pre>
@@ -154,7 +170,7 @@ hist(logSettleamt, labels=TRUE)
 </code></pre>
 
 <p><img src="https://github.com/Ak1714/R_square/blob/master/histogram-2.png?raw=true" width="500"></p>
-<h3 id="boxplot">Boxplot</h3>
+<h2 id="boxplot">Boxplot</h2>
 <p>Creating a boxplot of interest rate (int_rate) for each loan status (loan_status) to find the status that has loans with the highest median interest rate:</p>
 <pre><code class="r">boxplot(lendingData$int_rate ~ lendingData$loan_status, col = 6, labels = TRUE, las = 2, par(mar=c(8,5,2,2)))
 </code></pre>

@@ -8,7 +8,7 @@
         
         
         <link rel="shortcut icon" href="img/favicon.ico">
-        <title>Analysis of LendingClub Data</title>
+        <title>Analysis of Lending Club Loan Data</title>
         <link href="css/bootstrap.min.css" rel="stylesheet">
         <link href="css/font-awesome.min.css" rel="stylesheet">
         <link href="css/base.css" rel="stylesheet">
@@ -23,7 +23,7 @@
     <body class="homepage">
         <div class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
             <div class="container">
-                <a class="navbar-brand" href=".">Analysis of LendingClub Data</a>
+                <a class="navbar-brand" href=".">Analysis of Lending Club Loan Data</a>
                 <!-- Expander button -->
                 <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbar-collapse">
                     <span class="navbar-toggler-icon"></span>
@@ -81,24 +81,43 @@
     <div id="toc-collapse" class="navbar-collapse collapse card bg-secondary">
         <ul class="nav flex-column">
             
+            <li class="nav-item" data-level="2"><a href="#project-layout" class="nav-link">Project layout</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
             
+            <li class="nav-item" data-level="2"><a href="#data-source" class="nav-link">Data source</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
             
+            <li class="nav-item" data-level="2"><a href="#summary" class="nav-link">Summary</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
             
+            <li class="nav-item" data-level="2"><a href="#vetting-data" class="nav-link">Vetting data</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
         </ul>
     </div>
 </div></div>
                     <div class="col-md-9" role="main">
 
-<h3 id="project-layout">Project layout</h3>
+<h2 id="project-layout"><b>Project layout</b></h2>
 <pre><code>mkdocs.yml    # The configuration file.
 docs/
     index.md  # The documentation homepage with project summary
     LCDA_Part1.md # Analyzing and vizualizing the data
 </code></pre>
-<h3 id="data-source">Data source</h3>
-<h3 id="summary">Summary</h3>
-<p>Our goal is to build a robust model using logistic regression and classification tree for predicting the final status of a loan based on variables available at the time when the loan is granted.  </p>
-<h3 id="vetting-data">Vetting data</h3>
+<h2 id="data-source"><b>Data source</b></h2>
+<pre><code>https://www.kaggle.com/wordsforthewise/lending-club
+</code></pre>
+<h2 id="summary"><b>Summary</b></h2>
+<p><a href="https://www.lendingclub.com/">Lending Club</a> is the world’s leading online marketplace for connecting borrowers and investors. 
+ In this project the goal is to build a robust model using logistic regression and classification tree for predicting the final status of a loan based on variables available at the time when the loan is granted.  </p>
+<h2 id="vetting-data"><b>Vetting data</b></h2>
 <p>Reading the lendingdataclub 2017 Q3 csv file and scanning the file for all columns by skipping the first line since it is not required.</p>
 <pre><code>colNames &lt;- scan("LoanStats2017Q3.csv", what="character", skip=1, nlines=1, sep=",")
 </code></pre>
@@ -237,5 +256,5 @@ load("LoanStats2017Q3.rda")
 
 <!--
 MkDocs version : 1.1
-Build Date UTC : 2020-03-30 00:11:37
+Build Date UTC : 2020-03-30 00:35:32
 -->
