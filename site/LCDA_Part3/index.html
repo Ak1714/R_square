@@ -8,7 +8,7 @@
         
         
         <link rel="shortcut icon" href="../img/favicon.ico">
-        <title>Building Models - Analysis of LendingClub Data</title>
+        <title>Building Models - Analysis of Lending Club Loan Data</title>
         <link href="../css/bootstrap.min.css" rel="stylesheet">
         <link href="../css/font-awesome.min.css" rel="stylesheet">
         <link href="../css/base.css" rel="stylesheet">
@@ -23,7 +23,7 @@
     <body>
         <div class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
             <div class="container">
-                <a class="navbar-brand" href="..">Analysis of LendingClub Data</a>
+                <a class="navbar-brand" href="..">Analysis of Lending Club Loan Data</a>
                 <!-- Expander button -->
                 <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbar-collapse">
                     <span class="navbar-toggler-icon"></span>
@@ -81,19 +81,47 @@
     <div id="toc-collapse" class="navbar-collapse collapse card bg-secondary">
         <ul class="nav flex-column">
             
+            <li class="nav-item" data-level="2"><a href="#importing-packages" class="nav-link">Importing Packages</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
             
+            <li class="nav-item" data-level="2"><a href="#model-1-logistic-regression" class="nav-link">Model-1 Logistic Regression</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
             
+            <li class="nav-item" data-level="2"><a href="#model-2-classification-trees" class="nav-link">Model-2 Classification trees</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
             
+            <li class="nav-item" data-level="2"><a href="#model-3-logistic-regression" class="nav-link">Model-3 Logistic Regression</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
             
+            <li class="nav-item" data-level="2"><a href="#model-4-classification-trees" class="nav-link">Model-4 Classification trees</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
             
+            <li class="nav-item" data-level="2"><a href="#roc-curves" class="nav-link">ROC curves</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
             
+            <li class="nav-item" data-level="2"><a href="#area-under-curve" class="nav-link">Area Under Curve</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
         </ul>
     </div>
 </div></div>
                     <div class="col-md-9" role="main">
 
 <p><b>Building a robust model using Logistic Regression &amp; Classification trees</b></p>
-<h3 id="importing-packages">Importing Packages</h3>
+<h2 id="importing-packages"><b>Importing Packages</b></h2>
 <pre><code class="r">library(dplyr)
 library(rpart) # Classification tree
 library(caret) # classification &amp; regression
@@ -200,6 +228,7 @@ myLendWeights[myLDFtrain$loan_stat == &quot;Fully Paid&quot;] &lt;- 1
 myLendWeights[myLDFtrain$loan_stat == &quot;Charged Off&quot;] &lt;- 3
 </code></pre>
 
+<h2 id="model-1-logistic-regression"><b>Model-1 Logistic Regression</b></h2>
 <p>Running logistic regression using glm function on the training set and summarizing the output. Here we can consider the default significance level to be 0.05. The following variables don’t seem to be significant since their p values are less than 0.05.</p>
 <p>• sec_app_earliest_cr_line, 
  • hardship_end_date, emp_length, 
@@ -242,7 +271,7 @@ exp(coef(myLendLR))
 
 Misclassification rate: 0.3849
 </code></pre>
-<h3 id="model-2-classification-trees">Model-2 Classification trees</h3>
+<h2 id="model-2-classification-trees"><b>Model-2 Classification trees</b></h2>
 <p>For classification tree, we can create a data frame ‘lendrpart’ and use function ‘rpart’ and plotting the tree.</p>
 <pre><code class="r">set.seed(123)
 
@@ -274,7 +303,7 @@ myLendrpartCM
 
 Misclassification rate: 0.2776
 </code></pre>
-<h4 id="roc-curves-for-logistic-regression-classification-trees">ROC curves for logistic regression &amp; classification trees</h4>
+<p>ROC curves for logistic regression &amp; classification trees</p>
 <p>The following variables seem to be more important in predicting the outcome using logistic regression since their p-values are less than 0.05;</p>
 <p>• issue_d, </p>
 <p>• last_pymnt_d, </p>
@@ -309,7 +338,7 @@ myrpartPred &lt;- prediction(myrpartPredict[,2],
 myrpartPerf &lt;- performance(myrpartPred, &quot;tpr&quot;, &quot;fpr&quot;)
 </code></pre>
 
-<h3 id="models-with-additional-variables">Models with additional variables</h3>
+<p>Models with additional variables:</p>
 <p>Let's try building a logistic regression model and a classification tree model for predicting the final status of a loan based on the following variables using the same training and testing observation:</p>
 <p>• loan_amnt, funded_amnt_inv, term, int_rate, installment, grade, emp_length, home_ownership, annual_inc, verification_status, loan_status, purpose, title, dti, total_pymnt, delinq_2yrs, open_acc, pub_rec, last_pymnt_d, last_pymnt_amnt, application_type, revol_bal, revol_util, recoveries.</p>
 <p>The ‘home_ownership’ is a categorical variable with ‘NA’ values. Before proceeding, we need to filter out only the important values: ‘Mortgage’, ‘Own’ &amp; ‘Rent’.</p>
@@ -371,7 +400,7 @@ myLendWeights2[myL2DFtrain$loan_status == &quot;Fully Paid&quot;] &lt;- 1
 myLendWeights2[myL2DFtrain$loan_status == &quot;Charged Off&quot;] &lt;- 3
 </code></pre>
 
-<h3 id="model-3-logistic-regression">Model-3 Logistic Regression</h3>
+<h2 id="model-3-logistic-regression"><b>Model-3 Logistic Regression</b></h2>
 <p>Running logistic regression using ‘glm’ function on the training set and summarizing the output. Then using the predict function on the test set for classifications based on the responses. Splitting these classes into two groups for the confusion matrix: “&lt; 0.5 as Charged Off &amp; &gt;= 0.5 as Fully Paid”.</p>
 <pre><code class="r">
 myLendLR2 &lt;- glm(loan_status ~ ., data=myL2DFtrain, weights=myLendWeights2,
@@ -406,7 +435,7 @@ exp(coef(myLendLR2))
 
 </code></pre>
 
-<h3 id="model-4-classification-trees">Model-4 Classification trees</h3>
+<h2 id="model-4-classification-trees"><b>Model-4 Classification trees</b></h2>
 <pre><code class="r">lendrpart2 &lt;- rpart(loan_status ~ ., data=myL2DFtrain, weights = myLendWeights2)
 head(lendrpart2)
 #Plot the model
@@ -449,7 +478,7 @@ myrpartPred2 &lt;- prediction(myrpartPredict2[,2],
 myrpartPerf2 &lt;- performance(myrpartPred2, &quot;tpr&quot;, &quot;fpr&quot;)
 </code></pre>
 
-<h3 id="roc-curves">ROC curves</h3>
+<h2 id="roc-curves"><b>ROC curves</b></h2>
 <pre><code class="r">plot(myrpartPerf2, col=18)
 plot(myLRPerf2, col=19, add=TRUE)
 plot(myrpartPerf, col=20, add=TRUE)
@@ -459,7 +488,7 @@ legend(0.5, 0.6, c(&quot;Log. Reg.1&quot;, &quot;Class. Tree1&quot;, &quot;Log. 
 </code></pre>
 
 <p><img src="https://github.com/Ak1714/R_square/blob/master/roc.jpg?raw=true" width="500"></p>
-<h3 id="area-under-curve">Area Under Curve</h3>
+<h2 id="area-under-curve"><b>Area Under Curve</b></h2>
 <pre><code class="r">performance(myLRPred, &quot;auc&quot;)
 performance(myrpartPred, &quot;auc&quot;)
 performance(myLRPred2, &quot;auc&quot;)

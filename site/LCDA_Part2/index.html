@@ -8,7 +8,7 @@
         
         
         <link rel="shortcut icon" href="../img/favicon.ico">
-        <title>Clustering & PCA - Analysis of LendingClub Data</title>
+        <title>Clustering & PCA - Analysis of Lending Club Loan Data</title>
         <link href="../css/bootstrap.min.css" rel="stylesheet">
         <link href="../css/font-awesome.min.css" rel="stylesheet">
         <link href="../css/base.css" rel="stylesheet">
@@ -23,7 +23,7 @@
     <body>
         <div class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
             <div class="container">
-                <a class="navbar-brand" href="..">Analysis of LendingClub Data</a>
+                <a class="navbar-brand" href="..">Analysis of Lending Club Loan Data</a>
                 <!-- Expander button -->
                 <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbar-collapse">
                     <span class="navbar-toggler-icon"></span>
@@ -81,17 +81,37 @@
     <div id="toc-collapse" class="navbar-collapse collapse card bg-secondary">
         <ul class="nav flex-column">
             
+            <li class="nav-item" data-level="2"><a href="#importing-packages" class="nav-link">Importing packages</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
             
+            <li class="nav-item" data-level="2"><a href="#preparation-for-clustering" class="nav-link">Preparation for Clustering</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
             
+            <li class="nav-item" data-level="2"><a href="#pca" class="nav-link">PCA</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
             
+            <li class="nav-item" data-level="2"><a href="#pca-description" class="nav-link">PCA description</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
             
+            <li class="nav-item" data-level="2"><a href="#outlier-detection" class="nav-link">Outlier detection</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
         </ul>
     </div>
 </div></div>
                     <div class="col-md-9" role="main">
 
 <p><b>Cluster Analysis using PCA</b></p>
-<h3 id="importing-packages">Importing packages</h3>
+<h2 id="importing-packages"><b>Importing packages</b></h2>
 <pre><code class="r">library(dplyr)
 library(dummies) # dummy variables
 library(cluster) # Clustering
@@ -103,7 +123,7 @@ set.seed(12345)
 
 </code></pre>
 
-<h3 id="preparation-for-clustering">Preparation for Clustering</h3>
+<h2 id="preparation-for-clustering"><b>Preparation for Clustering</b></h2>
 <p>Storing variables in vectors:</p>
 <pre><code class="r">annualInc &lt;- lendingData$annual_inc
 loan_amnt &lt;- lendingData$loan_amnt
@@ -199,7 +219,7 @@ head(lendDF)
 ## 5  0.1273005856  2.6422365  0.55801989     -0.008074829             1.0309975
 ## 6 -0.1460014562 -0.7903336 -0.35896827     -0.008074829            -0.9699266
 </code></pre>
-<h3 id="pca">PCA</h3>
+<h2 id="pca"><b>PCA</b></h2>
 <p>Performing K-means clustering:</p>
 <pre><code class="r">lendKmeans &lt;- kmeans(lendDF, centers=7)
 
@@ -244,7 +264,7 @@ legend(&quot;topright&quot;, title = ,legend = 1:7, col = 1:7, pch =  1:7)
 ## Proportion of Variance 0.09913 0.0653 0.06377 0.05719 0.05461 0.05444 0.05387
 ## Cumulative Proportion  0.09913 0.1644 0.22820 0.28538 0.33999 0.39442 0.44830
 </code></pre>
-<h3 id="pca-description">PCA description</h3>
+<h2 id="pca-description"><b>PCA description</b></h2>
 <p>After inspecting the first two PCs the observations are as follows:</p>
 <p>• The variation on the first component is due to several related variables concerning the borrowers’ loan amount, homes that are mortgaged and borrowers employed for more than 10 years. Borrowers with larger values on the first component will have larger values for these variables.</p>
 <p>• The variation on the second component is due to the borrowers employed for less than a year and for 6 years, homes that are mortgaged, and debt-to-income ratio. Borrowers with larger values on the second component will have larger values for these variables.</p>
@@ -255,7 +275,7 @@ legend(&quot;topright&quot;, title = ,legend = 1:7, col = 1:7, pch =  1:7)
 <p>• In PC2, there is a trade-off between more borrowers with mortgaged homes and lesser owned homes. Another trade-off between more borrowers with lower employment length (&lt; 1 year) and lower number of borrowers employed for 10+ years.</p>
 <p>• In PC1, there is a trade-off between mortgaged homes and lower number of borrowers with rented homes. Another trade-off between more borrowers employed (&gt;10 years) and less borrowers employed from 1 to 4 years.</p>
 <p>• The outlier seems to affect strongly the first principal component.</p>
-<h3 id="outlier-detection">Outlier detection</h3>
+<h2 id="outlier-detection"><b>Outlier detection</b></h2>
 <pre><code class="r">#lendPCA$x[,1]
 which(lendPCA$x[,1] &gt; 20)
 </code></pre>

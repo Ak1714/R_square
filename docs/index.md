@@ -5,6 +5,8 @@
     docs/
         index.md  # The documentation homepage with project summary
 		LCDA_Part1.md # Analyzing and vizualizing the data
+		LCDA_Part2.md # Clustering & PCA
+		LCDA_Part3.md # Building models
 
 ## <b>Data source</b>
 
