@@ -1,21 +1,22 @@
 
-### Project layout
+## <b>Project layout</b>
 
     mkdocs.yml    # The configuration file.
     docs/
         index.md  # The documentation homepage with project summary
 		LCDA_Part1.md # Analyzing and vizualizing the data
 
-### Data source
+## <b>Data source</b>
+
+	https://www.kaggle.com/wordsforthewise/lending-club
+
+## <b>Summary</b>
+
+ <a href="https://www.lendingclub.com/">Lending Club</a> is the world’s leading online marketplace for connecting borrowers and investors. 
+ In this project the goal is to build a robust model using logistic regression and classification tree for predicting the final status of a loan based on variables available at the time when the loan is granted.  
 
 
-
-### Summary
-
-Our goal is to build a robust model using logistic regression and classification tree for predicting the final status of a loan based on variables available at the time when the loan is granted.  
-
-
-### Vetting data
+## <b>Vetting data</b>
 
  
  Reading the lendingdataclub 2017 Q3 csv file and scanning the file for all columns by skipping the first line since it is not required.

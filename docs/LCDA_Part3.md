@@ -1,6 +1,6 @@
 <b>Building a robust model using Logistic Regression & Classification trees</b>
 
-### Importing Packages
+## <b>Importing Packages</b>
 
 ``` r
 library(dplyr)
@@ -118,6 +118,8 @@ myLendWeights[myLDFtrain$loan_stat == "Fully Paid"] <- 1
 myLendWeights[myLDFtrain$loan_stat == "Charged Off"] <- 3
 ```
 
+## <b>Model-1 Logistic Regression</b>
+
 Running logistic regression using glm function on the training set and summarizing the output. Here we can consider the default significance level to be 0.05. The following variables don’t seem to be significant since their p values are less than 0.05.
 
  • sec_app_earliest_cr_line, 
@@ -164,7 +166,7 @@ exp(coef(myLendLR))
 			
 	Misclassification rate: 0.3849
 
-### Model-2 Classification trees
+## <b>Model-2 Classification trees</b>
 
 For classification tree, we can create a data frame ‘lendrpart’ and use function ‘rpart’ and plotting the tree.
 
@@ -202,7 +204,7 @@ myLendrpartCM
 	Misclassification rate: 0.2776
 
 
-####ROC curves for logistic regression & classification trees
+ROC curves for logistic regression & classification trees
 
 The following variables seem to be more important in predicting the outcome using logistic regression since their p-values are less than 0.05;
 
@@ -249,7 +251,7 @@ myrpartPred <- prediction(myrpartPredict[,2],
 myrpartPerf <- performance(myrpartPred, "tpr", "fpr")
 ```
 
-### Models with additional variables
+Models with additional variables:
 
 Let's try building a logistic regression model and a classification tree model for predicting the final status of a loan based on the following variables using the same training and testing observation:
 
@@ -320,7 +322,7 @@ myLendWeights2[myL2DFtrain$loan_status == "Fully Paid"] <- 1
 myLendWeights2[myL2DFtrain$loan_status == "Charged Off"] <- 3
 ```
 
-### Model-3 Logistic Regression
+## <b>Model-3 Logistic Regression</b>
 
 Running logistic regression using ‘glm’ function on the training set and summarizing the output. Then using the predict function on the test set for classifications based on the responses. Splitting these classes into two groups for the confusion matrix: “< 0.5 as Charged Off & >= 0.5 as Fully Paid”.
 
@@ -358,7 +360,7 @@ exp(coef(myLendLR2))
 
 ```
 
-### Model-4 Classification trees
+## <b>Model-4 Classification trees</b>
 
 ``` r
 lendrpart2 <- rpart(loan_status ~ ., data=myL2DFtrain, weights = myLendWeights2)
@@ -405,7 +407,7 @@ myrpartPred2 <- prediction(myrpartPredict2[,2],
 myrpartPerf2 <- performance(myrpartPred2, "tpr", "fpr")
 ```
 
-### ROC curves
+## <b>ROC curves</b>
 
 ``` r
 plot(myrpartPerf2, col=18)
@@ -418,7 +420,7 @@ legend(0.5, 0.6, c("Log. Reg.1", "Class. Tree1", "Log. Reg.2", "Class. Tree2"), 
 
 <img src="https://github.com/Ak1714/R_square/blob/master/roc.jpg?raw=true" width="500">
 
-### Area Under Curve
+## <b>Area Under Curve</b>
 
 ``` r
 performance(myLRPred, "auc")

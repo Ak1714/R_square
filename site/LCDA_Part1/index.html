@@ -4,26 +4,26 @@
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <meta name="description" content="None">
         
         
-        <link rel="shortcut icon" href="img/favicon.ico">
-        <title>Analysis of LendingClub Data</title>
-        <link href="css/bootstrap.min.css" rel="stylesheet">
-        <link href="css/font-awesome.min.css" rel="stylesheet">
-        <link href="css/base.css" rel="stylesheet">
+        
+        <link rel="shortcut icon" href="../img/favicon.ico">
+        <title>Vizualizing Data - Analysis of LendingClub Data</title>
+        <link href="../css/bootstrap.min.css" rel="stylesheet">
+        <link href="../css/font-awesome.min.css" rel="stylesheet">
+        <link href="../css/base.css" rel="stylesheet">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css">
 
-        <script src="js/jquery-1.10.2.min.js" defer></script>
-        <script src="js/bootstrap.min.js" defer></script>
+        <script src="../js/jquery-1.10.2.min.js" defer></script>
+        <script src="../js/bootstrap.min.js" defer></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
         <script>hljs.initHighlightingOnLoad();</script> 
     </head>
 
-    <body class="homepage">
+    <body>
         <div class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
             <div class="container">
-                <a class="navbar-brand" href=".">Analysis of LendingClub Data</a>
+                <a class="navbar-brand" href="..">Analysis of LendingClub Data</a>
                 <!-- Expander button -->
                 <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbar-collapse">
                     <span class="navbar-toggler-icon"></span>
@@ -33,17 +33,17 @@
                 <div id="navbar-collapse" class="navbar-collapse collapse">
                         <!-- Main navigation -->
                         <ul class="nav navbar-nav">
+                            <li class="navitem">
+                                <a href=".." class="nav-link">Home</a>
+                            </li>
                             <li class="navitem active">
-                                <a href="." class="nav-link">Home</a>
+                                <a href="./" class="nav-link">Vizualizing Data</a>
                             </li>
                             <li class="navitem">
-                                <a href="LCDA_Part1/" class="nav-link">Vizualizing Data</a>
+                                <a href="../LCDA_Part2/" class="nav-link">Clustering & PCA</a>
                             </li>
                             <li class="navitem">
-                                <a href="LCDA_Part2/" class="nav-link">Clustering & PCA</a>
-                            </li>
-                            <li class="navitem">
-                                <a href="LCDA_Part3/" class="nav-link">Building Models</a>
+                                <a href="../LCDA_Part3/" class="nav-link">Building Models</a>
                             </li>
                         </ul>
 
@@ -54,12 +54,12 @@
                             </a>
                         </li>
                             <li class="nav-item">
-                                <a rel="prev" class="nav-link disabled">
+                                <a rel="prev" href=".." class="nav-link">
                                     <i class="fa fa-arrow-left"></i> Previous
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a rel="next" href="LCDA_Part1/" class="nav-link">
+                                <a rel="next" href="../LCDA_Part2/" class="nav-link">
                                     Next <i class="fa fa-arrow-right"></i>
                                 </a>
                             </li>
@@ -89,71 +89,97 @@
 </div></div>
                     <div class="col-md-9" role="main">
 
-<h3 id="project-layout">Project layout</h3>
-<pre><code>mkdocs.yml    # The configuration file.
-docs/
-    index.md  # The documentation homepage with project summary
-    LCDA_Part1.md # Analyzing and vizualizing the data
+<p><b>Exploratory analysis and visualizing to get a feel of the distribution patterns </b></p>
+<h3 id="importing-packages">Importing packages</h3>
+<pre><code class="r">library(ggplot2)
+library(dplyr)
 </code></pre>
-<h3 id="data-source">Data source</h3>
-<h3 id="summary">Summary</h3>
-<p>Our goal is to build a robust model using logistic regression and classification tree for predicting the final status of a loan based on variables available at the time when the loan is granted.  </p>
-<h3 id="vetting-data">Vetting data</h3>
-<p>Reading the lendingdataclub 2017 Q3 csv file and scanning the file for all columns by skipping the first line since it is not required.</p>
-<pre><code>colNames &lt;- scan("LoanStats2017Q3.csv", what="character", skip=1, nlines=1, sep=",")
-</code></pre>
-<p>Specifying the character and factor columns for categorical data, since rest of it is mostly numerical and date data.</p>
-<pre><code>characterColumns &lt;- c("id", "member_id", "emp_title", "issue_d", "url",
-                  "desc", "zip_code", "addr_state", "earliest_cr_line", "last_pymnt_d",
-                  "next_pymnt_d", "last_credit_pull_d", "sec_app_earliest_cr_line",
-                  "hardship_type", "hardship_reason", "hardship_start_date",
-                  "hardship_end_date", "payment_plan_start_date",
-                  "debt_settlement_flag_date", "settlement_date")
-factorColumns &lt;- c("term", "grade", "sub_grade", "emp_length",
-               "home_ownership", "verification_status", "loan_status",
-               "pymnt_plan", "purpose", "title", "initial_list_status",
-               "policy_code", "application_type", "verification_status_joint",
-               "hardship_flag", "hardship_status", "hardship_loan_status",
-               "disbursement_method", "debt_settlement_flag", "settlement_status")
-</code></pre>
-<p>Excluding the top two rows and any other row that is not part of the main data by specifying the exact number of rows (122701)</p>
-<pre><code>lendingRows &lt;- 122701
-lendingData &lt;- read.table("LoanStats2017Q3.csv", skip=1, sep=",", nrows=lendingRows,
-                      colClasses = myColClasses, header=TRUE)
-</code></pre>
-<p>After reading the columns, two columns: revol_util  and int_rate have % signs. We don’t want R to interpret it as character strings. Hence, we can convert to character strings and getting rid of the ‘%’ and then back to numeric.</p>
-<pre><code>lendingData$revol_util &lt;- as.character(lendingData$revol_util)
-lendingData$revol_util &lt;- sub("%", "", lendingData$revol_util)
-lendingData$revol_util &lt;- as.numeric(lendingData$revol_util)
-lendingData$int_rate &lt;- as.character(lendingData$int_rate)
-lendingData$int_rate &lt;- sub("%", "", lendingData$int_rate)
-lendingData$int_rate &lt;- as.numeric(lendingData$int_rate)
-</code></pre>
-<p>Formatting the columns for date data and specifying the first of the month since the data only has month and year.</p>
-<pre><code>dateColumns &lt;- c("issue_d", "last_pymnt_d", "next_pymnt_d", "last_credit_pull_d",
-             "sec_app_earliest_cr_line", "hardship_start_date", "hardship_end_date",
-             "payment_plan_start_date", "debt_settlement_flag_date", "settlement_date",
-             "earliest_cr_line")
-</code></pre>
-<p>Using function strptime(x, format), where x is a character vector of dates and format is a character string of the dates, using percent symbols with characters to specify what types of date and time information.%d: Day of the month as decimal number (01--31)%b: Abbreviated month name in the current locale on this platform%Y: Year with century   e.g.: 2015</p>
-<pre><code>lendingData[,dateColumns] &lt;- apply(lendingData[,dateColumns], 2, function(x) {
-strptime(paste("1", x), "%d %b-%Y")})
 
-lendingData[,dateColumns] &lt;- apply(lendingData[,dateColumns], 2, function(x) {
-strptime(paste("1", x), "%d %b-%Y")})
+<h3 id="exploratory-analysis">Exploratory analysis</h3>
+<p>Determining the mean and median of the borrowers' months since last public record (mths_since_last_record). Finding the number of observations for which this value is missing and creating a new variable where the value is imputed with the median.</p>
+<pre><code class="r">load(&quot;LoanStats2017Q3.rda&quot;)
+mean(lendingData$mths_since_last_record)
 </code></pre>
-<p>Saving the file as R object for faster loading. Then counting the number of each loan status.</p>
-<pre><code>save(lendingData, file="LoanStats2017Q3.rda")
 
-load("LoanStats2017Q3.rda")
+<pre><code>## [1] NA
+</code></pre>
+<p>Counting number of nulls:</p>
+<pre><code class="r">sum(is.na(lendingData$mths_since_last_record))
+</code></pre>
 
-(table(lendingData$loan_status))
+<pre><code>## [1] 103863
+</code></pre>
+<p>Calculating mean without NULL values:</p>
+<pre><code class="r">mean(lendingData$mths_since_last_record, na.rm = TRUE)
+</code></pre>
 
-# Charged Off            Current            Default         Fully Paid    In Grace Period 
-#    12876                65816                161              40471                752 
-# Late (16-30 days) Late (31-120 days) 
-#      503                2122
-</code></pre></div>
+<pre><code>## [1] 75.79589
+</code></pre>
+<p>Calculating the median without null values:</p>
+<pre><code class="r">median(lendingData$mths_since_last_record, na.rm = TRUE)
+</code></pre>
+
+<pre><code>## [1] 79
+</code></pre>
+<p>Creating a new column for imputing median in place of NULL. Then imputing median in the new column in place of NULLs:</p>
+<pre><code class="r">medianCol &lt;- c(lendingData$mths_since_last_record)
+
+medianCol[is.na(medianCol)] &lt;- median(medianCol, na.rm = TRUE)
+
+sum(is.na(medianCol))
+</code></pre>
+
+<pre><code>## [1] 0
+</code></pre>
+<p>Calculating mean &amp; median for the new column:</p>
+<pre><code class="r">mean(medianCol)
+</code></pre>
+
+<pre><code>## [1] 78.50808
+</code></pre>
+<pre><code class="r">median(medianCol)
+</code></pre>
+
+<pre><code>## [1] 79
+</code></pre>
+<h3 id="histogram">Histogram</h3>
+<p>We plot a histogram for the settlement amount for loans using the function hist();</p>
+<pre><code class="r">hist(lendingData$settlement_amount)
+</code></pre>
+
+<p><img src="https://github.com/Ak1714/R_square/blob/master/histogram-1.png?raw=true" width="500"></p>
+<p>The above histogram looks to be right skewed. Also, the column has a large range between $331.44 to $24102, it makes sense to do a log transformation to make it closer to a normal distribution. The below histogram appears to be close to a normal distribution.</p>
+<pre><code class="r">logSettleamt &lt;- log(lendingData$settlement_amount)
+hist(logSettleamt, labels=TRUE)
+</code></pre>
+
+<p><img src="https://github.com/Ak1714/R_square/blob/master/histogram-2.png?raw=true" width="500"></p>
+<h3 id="boxplot">Boxplot</h3>
+<p>Creating a boxplot of interest rate (int_rate) for each loan status (loan_status) to find the status that has loans with the highest median interest rate:</p>
+<pre><code class="r">boxplot(lendingData$int_rate ~ lendingData$loan_status, col = 6, labels = TRUE, las = 2, par(mar=c(8,5,2,2)))
+</code></pre>
+
+<p><img src="https://github.com/Ak1714/R_square/blob/master/unnamed-chunk-1-1.png?raw=true" width="500"></p>
+<p>The median values for all loan statuses are summarized below using dplyr and group_by:</p>
+<pre><code class="r">lendingData %&gt;%
+              dplyr::select(loan_status, int_rate) %&gt;%
+              group_by(loan_status) %&gt;%
+              summarize(medianVal = median(int_rate, na.rm = TRUE)) %&gt;%
+              arrange(loan_status)
+</code></pre>
+
+<pre><code>## # A tibble: 7 x 2
+##   loan_status        medianVal
+##   &lt;fct&gt;                  &lt;dbl&gt;
+## 1 Charged Off             15.0
+## 2 Current                 12.0
+## 3 Default                 15.0
+## 4 Fully Paid              12.6
+## 5 In Grace Period         14.1
+## 6 Late (16-30 days)       14.1
+## 7 Late (31-120 days)      15.0
+</code></pre>
+<p>From the boxplot, loan statuses: Charged Off, Default and Late (31-120 days) tend to have the highest median interest rates since these borrowers haven’t been able to pay their interests on time. The interest rates for Fully Paid loans are lower than those of Charged Off ones.</p></div>
             </div>
         </div>
 
@@ -162,11 +188,11 @@ load("LoanStats2017Q3.rda")
             <p>Documentation built with <a href="https://www.mkdocs.org/">MkDocs</a>.</p>
         </footer>
         <script>
-            var base_url = ".",
+            var base_url = "..",
                 shortcuts = {"help": 191, "next": 78, "previous": 80, "search": 83};
         </script>
-        <script src="js/base.js" defer></script>
-        <script src="search/main.js" defer></script>
+        <script src="../js/base.js" defer></script>
+        <script src="../search/main.js" defer></script>
 
         <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="searchModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
@@ -234,8 +260,3 @@ load("LoanStats2017Q3.rda")
 
     </body>
 </html>
-
-<!--
-MkDocs version : 1.1
-Build Date UTC : 2020-03-30 00:11:37
--->

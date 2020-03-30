@@ -1,6 +1,6 @@
 <b>Cluster Analysis using PCA</b>
 
-### Importing packages
+## <b>Importing packages</b>
 
 ``` r
 library(dplyr)
@@ -14,7 +14,7 @@ set.seed(12345)
 
 ```
 
-### Preparation for Clustering
+## <b>Preparation for Clustering</b>
 
 Storing variables in vectors:
 
@@ -127,7 +127,7 @@ head(lendDF)
     ## 6 -0.1460014562 -0.7903336 -0.35896827     -0.008074829            -0.9699266
 
 
-### PCA
+## <b>PCA</b>
 
 Performing K-means clustering:
 
@@ -180,7 +180,7 @@ summary(lendPCA)
     ## Proportion of Variance 0.09913 0.0653 0.06377 0.05719 0.05461 0.05444 0.05387
     ## Cumulative Proportion  0.09913 0.1644 0.22820 0.28538 0.33999 0.39442 0.44830
 
-### PCA description
+## <b>PCA description</b>
 
 After inspecting the first two PCs the observations are as follows:
 
@@ -188,11 +188,11 @@ After inspecting the first two PCs the observations are as follows:
 
  • The variation on the second component is due to the borrowers employed for less than a year and for 6 years, homes that are mortgaged, and debt-to-income ratio. Borrowers with larger values on the second component will have larger values for these variables.
  
- • The black cluster has negative values for PC1, indicating fewer rented homes and lesser number of borrowers employed between 1 to 4 years inclusive. The scores on PC2 are negative as well, indicating borrowers with lower annual income.
+ • The <font color="black">black cluster</font> has negative values for PC1, indicating fewer rented homes and lesser number of borrowers employed between 1 to 4 years inclusive. The scores on PC2 are negative as well, indicating borrowers with lower annual income.
  
- • The pink cluster has positive values for PC1 than the black cluster, indicating a greater number of borrowers whose homes are mortgaged, have higher loan amounts and have been employed for more than 10 years. The scores on PC2 are near zero, indicating that the values are moderate compared to the rest of the data.
+ • The <font color="pink">pink cluster</font> has positive values for PC1 than the <font color="black">black cluster</font>, indicating a greater number of borrowers whose homes are mortgaged, have higher loan amounts and have been employed for more than 10 years. The scores on PC2 are near zero, indicating that the values are moderate compared to the rest of the data.
  
- • The yellow & cyan clusters overlap with the black cluster and the red & green clusters overlap with pink cluster. This indicates that the overlapping clusters have similar characteristics.
+ • The <font color="yellow">yellow clusters</font> & <font color="cyan">cyan clusters</font> overlap with the black cluster and the <font color="red">red cluster</font> & <font color="green">green cluster</font> clusters overlap with <font color="pink">pink cluster</font>. This indicates that the overlapping clusters have similar characteristics.
  
  • The blue cluster has the largest positive values for PC2 corresponding to larger number of borrowers with employment term < 1 year, higher mortgaged homes, higher debt-to-income ratio and higher annual income. 
  
@@ -203,7 +203,7 @@ After inspecting the first two PCs the observations are as follows:
  • The outlier seems to affect strongly the first principal component.
 
 
-### Outlier detection
+## <b>Outlier detection</b>
 
 
 ``` r

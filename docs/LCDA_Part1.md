@@ -1,13 +1,13 @@
 <b>Exploratory analysis and visualizing to get a feel of the distribution patterns </b>
 
-### Importing packages
+## Importing packages
 
 ``` r
 library(ggplot2)
 library(dplyr)
 ```
 
-### Exploratory analysis
+## Exploratory analysis
 
 Determining the mean and median of the borrowers' months since last public record (mths_since_last_record). Finding the number of observations for which this value is missing and creating a new variable where the value is imputed with the median.
 
@@ -67,7 +67,7 @@ median(medianCol)
 
     ## [1] 79
 
-### Histogram
+## Histogram
 
 We plot a histogram for the settlement amount for loans using the function hist();
 
@@ -85,7 +85,7 @@ hist(logSettleamt, labels=TRUE)
 ```
 <img src="https://github.com/Ak1714/R_square/blob/master/histogram-2.png?raw=true" width="500">
 
-### Boxplot
+## Boxplot
 
 Creating a boxplot of interest rate (int_rate) for each loan status (loan_status) to find the status that has loans with the highest median interest rate:
 

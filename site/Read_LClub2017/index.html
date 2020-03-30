@@ -4,26 +4,26 @@
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <meta name="description" content="None">
         
         
-        <link rel="shortcut icon" href="img/favicon.ico">
-        <title>Analysis of LendingClub Data</title>
-        <link href="css/bootstrap.min.css" rel="stylesheet">
-        <link href="css/font-awesome.min.css" rel="stylesheet">
-        <link href="css/base.css" rel="stylesheet">
+        
+        <link rel="shortcut icon" href="../img/favicon.ico">
+        <title>Read_LClub2017 - Analysis of LendingClub Data</title>
+        <link href="../css/bootstrap.min.css" rel="stylesheet">
+        <link href="../css/font-awesome.min.css" rel="stylesheet">
+        <link href="../css/base.css" rel="stylesheet">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css">
 
-        <script src="js/jquery-1.10.2.min.js" defer></script>
-        <script src="js/bootstrap.min.js" defer></script>
+        <script src="../js/jquery-1.10.2.min.js" defer></script>
+        <script src="../js/bootstrap.min.js" defer></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
         <script>hljs.initHighlightingOnLoad();</script> 
     </head>
 
-    <body class="homepage">
+    <body>
         <div class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
             <div class="container">
-                <a class="navbar-brand" href=".">Analysis of LendingClub Data</a>
+                <a class="navbar-brand" href="..">Analysis of LendingClub Data</a>
                 <!-- Expander button -->
                 <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbar-collapse">
                     <span class="navbar-toggler-icon"></span>
@@ -33,17 +33,17 @@
                 <div id="navbar-collapse" class="navbar-collapse collapse">
                         <!-- Main navigation -->
                         <ul class="nav navbar-nav">
-                            <li class="navitem active">
-                                <a href="." class="nav-link">Home</a>
+                            <li class="navitem">
+                                <a href=".." class="nav-link">Home</a>
                             </li>
                             <li class="navitem">
-                                <a href="LCDA_Part1/" class="nav-link">Vizualizing Data</a>
+                                <a href="../LCDA_Part1/" class="nav-link">Vizualizing Data</a>
                             </li>
                             <li class="navitem">
-                                <a href="LCDA_Part2/" class="nav-link">Clustering & PCA</a>
+                                <a href="../LCDA_Part2/" class="nav-link">Clustering & PCA</a>
                             </li>
                             <li class="navitem">
-                                <a href="LCDA_Part3/" class="nav-link">Building Models</a>
+                                <a href="../LCDA_Part3/" class="nav-link">Building Models</a>
                             </li>
                         </ul>
 
@@ -53,16 +53,6 @@
                                 <i class="fa fa-search"></i> Search
                             </a>
                         </li>
-                            <li class="nav-item">
-                                <a rel="prev" class="nav-link disabled">
-                                    <i class="fa fa-arrow-left"></i> Previous
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a rel="next" href="LCDA_Part1/" class="nav-link">
-                                    Next <i class="fa fa-arrow-right"></i>
-                                </a>
-                            </li>
                     </ul>
                 </div>
             </div>
@@ -80,79 +70,95 @@
     
     <div id="toc-collapse" class="navbar-collapse collapse card bg-secondary">
         <ul class="nav flex-column">
-            
-            
-            
-            
         </ul>
     </div>
 </div></div>
                     <div class="col-md-9" role="main">
 
-<h3 id="project-layout">Project layout</h3>
-<pre><code>mkdocs.yml    # The configuration file.
-docs/
-    index.md  # The documentation homepage with project summary
-    LCDA_Part1.md # Analyzing and vizualizing the data
+<p>```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)</p>
+<pre><code>
+## R Markdown
+
+```{r}
+# reading the lendingdataclub 2017 Q3 .csv file
+# Scanning the file for reading all columns by skipping the first line since it is not required.
+colNames &lt;- scan(&quot;LoanStats2017Q3.csv&quot;, what=&quot;character&quot;, skip=1, nlines=1, sep=&quot;,&quot;)
+
+
+# Specifying the character and factor columns for categorical data, 
+# since rest of it is mostly numerical and date data.
+
+characterColumns &lt;- c(&quot;id&quot;, &quot;member_id&quot;, &quot;emp_title&quot;, &quot;issue_d&quot;, &quot;url&quot;,
+                      &quot;desc&quot;, &quot;zip_code&quot;, &quot;addr_state&quot;, &quot;earliest_cr_line&quot;, &quot;last_pymnt_d&quot;,
+                      &quot;next_pymnt_d&quot;, &quot;last_credit_pull_d&quot;, &quot;sec_app_earliest_cr_line&quot;,
+                      &quot;hardship_type&quot;, &quot;hardship_reason&quot;, &quot;hardship_start_date&quot;,
+                      &quot;hardship_end_date&quot;, &quot;payment_plan_start_date&quot;,
+                      &quot;debt_settlement_flag_date&quot;, &quot;settlement_date&quot;)
+factorColumns &lt;- c(&quot;term&quot;, &quot;grade&quot;, &quot;sub_grade&quot;, &quot;emp_length&quot;,
+                   &quot;home_ownership&quot;, &quot;verification_status&quot;, &quot;loan_status&quot;,
+                   &quot;pymnt_plan&quot;, &quot;purpose&quot;, &quot;title&quot;, &quot;initial_list_status&quot;,
+                   &quot;policy_code&quot;, &quot;application_type&quot;, &quot;verification_status_joint&quot;,
+                   &quot;hardship_flag&quot;, &quot;hardship_status&quot;, &quot;hardship_loan_status&quot;,
+                   &quot;disbursement_method&quot;, &quot;debt_settlement_flag&quot;, &quot;settlement_status&quot;)
 </code></pre>
-<h3 id="data-source">Data source</h3>
-<h3 id="summary">Summary</h3>
-<p>Our goal is to build a robust model using logistic regression and classification tree for predicting the final status of a loan based on variables available at the time when the loan is granted.  </p>
-<h3 id="vetting-data">Vetting data</h3>
-<p>Reading the lendingdataclub 2017 Q3 csv file and scanning the file for all columns by skipping the first line since it is not required.</p>
-<pre><code>colNames &lt;- scan("LoanStats2017Q3.csv", what="character", skip=1, nlines=1, sep=",")
-</code></pre>
-<p>Specifying the character and factor columns for categorical data, since rest of it is mostly numerical and date data.</p>
-<pre><code>characterColumns &lt;- c("id", "member_id", "emp_title", "issue_d", "url",
-                  "desc", "zip_code", "addr_state", "earliest_cr_line", "last_pymnt_d",
-                  "next_pymnt_d", "last_credit_pull_d", "sec_app_earliest_cr_line",
-                  "hardship_type", "hardship_reason", "hardship_start_date",
-                  "hardship_end_date", "payment_plan_start_date",
-                  "debt_settlement_flag_date", "settlement_date")
-factorColumns &lt;- c("term", "grade", "sub_grade", "emp_length",
-               "home_ownership", "verification_status", "loan_status",
-               "pymnt_plan", "purpose", "title", "initial_list_status",
-               "policy_code", "application_type", "verification_status_joint",
-               "hardship_flag", "hardship_status", "hardship_loan_status",
-               "disbursement_method", "debt_settlement_flag", "settlement_status")
-</code></pre>
-<p>Excluding the top two rows and any other row that is not part of the main data by specifying the exact number of rows (122701)</p>
-<pre><code>lendingRows &lt;- 122701
-lendingData &lt;- read.table("LoanStats2017Q3.csv", skip=1, sep=",", nrows=lendingRows,
-                      colClasses = myColClasses, header=TRUE)
-</code></pre>
-<p>After reading the columns, two columns: revol_util  and int_rate have % signs. We don’t want R to interpret it as character strings. Hence, we can convert to character strings and getting rid of the ‘%’ and then back to numeric.</p>
-<pre><code>lendingData$revol_util &lt;- as.character(lendingData$revol_util)
-lendingData$revol_util &lt;- sub("%", "", lendingData$revol_util)
+
+<pre><code class="r"># Now reading the data and skipping the first line which is not required. 
+# Excluding the top two rows and any other row that is not part of the main data by specifying 
+# the exact number of rows (122701)
+
+lendingRows &lt;- 122701
+lendingData &lt;- read.table(&quot;LoanStats2017Q3.csv&quot;, skip=1, sep=&quot;,&quot;, nrows=lendingRows,
+                          colClasses = myColClasses, header=TRUE)
+
+# After reading the columns, two columns: revol_util  and int_rate have % signs. 
+# We don’t want R to interpret it as character strings. Hence, we can convert to 
+# character strings and getting rid of the ‘%’ and then back to numeric.
+
+lendingData$revol_util &lt;- as.character(lendingData$revol_util)
+lendingData$revol_util &lt;- sub(&quot;%&quot;, &quot;&quot;, lendingData$revol_util)
 lendingData$revol_util &lt;- as.numeric(lendingData$revol_util)
 lendingData$int_rate &lt;- as.character(lendingData$int_rate)
-lendingData$int_rate &lt;- sub("%", "", lendingData$int_rate)
+lendingData$int_rate &lt;- sub(&quot;%&quot;, &quot;&quot;, lendingData$int_rate)
 lendingData$int_rate &lt;- as.numeric(lendingData$int_rate)
 </code></pre>
-<p>Formatting the columns for date data and specifying the first of the month since the data only has month and year.</p>
-<pre><code>dateColumns &lt;- c("issue_d", "last_pymnt_d", "next_pymnt_d", "last_credit_pull_d",
-             "sec_app_earliest_cr_line", "hardship_start_date", "hardship_end_date",
-             "payment_plan_start_date", "debt_settlement_flag_date", "settlement_date",
-             "earliest_cr_line")
-</code></pre>
-<p>Using function strptime(x, format), where x is a character vector of dates and format is a character string of the dates, using percent symbols with characters to specify what types of date and time information.%d: Day of the month as decimal number (01--31)%b: Abbreviated month name in the current locale on this platform%Y: Year with century   e.g.: 2015</p>
-<pre><code>lendingData[,dateColumns] &lt;- apply(lendingData[,dateColumns], 2, function(x) {
-strptime(paste("1", x), "%d %b-%Y")})
+
+<pre><code class="r"># Formatting the columns for date data and specifying the first of the month since 
+# the data only has month and year. 
+
+dateColumns &lt;- c(&quot;issue_d&quot;, &quot;last_pymnt_d&quot;, &quot;next_pymnt_d&quot;, &quot;last_credit_pull_d&quot;,
+                 &quot;sec_app_earliest_cr_line&quot;, &quot;hardship_start_date&quot;, &quot;hardship_end_date&quot;,
+                 &quot;payment_plan_start_date&quot;, &quot;debt_settlement_flag_date&quot;, &quot;settlement_date&quot;,
+                 &quot;earliest_cr_line&quot;)
+
+# Using function strptime(x, format), where x is a character vector of dates and format is a 
+# character string of the dates, using percent symbols with characters to specify what types 
+# of date and time information.
+# %d: Day of the month as decimal number (01--31)
+# %b: Abbreviated month name in the current locale on this platform
+# %Y: Year with century  e.g.: 2015
 
 lendingData[,dateColumns] &lt;- apply(lendingData[,dateColumns], 2, function(x) {
-strptime(paste("1", x), "%d %b-%Y")})
-</code></pre>
-<p>Saving the file as R object for faster loading. Then counting the number of each loan status.</p>
-<pre><code>save(lendingData, file="LoanStats2017Q3.rda")
+  strptime(paste(&quot;1&quot;, x), &quot;%d %b-%Y&quot;)})
 
-load("LoanStats2017Q3.rda")
+lendingData[,dateColumns] &lt;- apply(lendingData[,dateColumns], 2, function(x) {
+  strptime(paste(&quot;1&quot;, x), &quot;%d %b-%Y&quot;)})
+</code></pre>
+
+<pre><code class="r"># Saving the file as R object for faster loading. Then counting the number of each loan status.
+
+save(lendingData, file=&quot;LoanStats2017Q3.rda&quot;)
+
+load(&quot;LoanStats2017Q3.rda&quot;)
 
 (table(lendingData$loan_status))
 
 # Charged Off            Current            Default         Fully Paid    In Grace Period 
 #    12876                65816                161              40471                752 
 # Late (16-30 days) Late (31-120 days) 
-#      503                2122
+#      503                2122 
+
+
 </code></pre></div>
             </div>
         </div>
@@ -162,11 +168,11 @@ load("LoanStats2017Q3.rda")
             <p>Documentation built with <a href="https://www.mkdocs.org/">MkDocs</a>.</p>
         </footer>
         <script>
-            var base_url = ".",
+            var base_url = "..",
                 shortcuts = {"help": 191, "next": 78, "previous": 80, "search": 83};
         </script>
-        <script src="js/base.js" defer></script>
-        <script src="search/main.js" defer></script>
+        <script src="../js/base.js" defer></script>
+        <script src="../search/main.js" defer></script>
 
         <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="searchModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
@@ -234,8 +240,3 @@ load("LoanStats2017Q3.rda")
 
     </body>
 </html>
-
-<!--
-MkDocs version : 1.1
-Build Date UTC : 2020-03-30 00:11:37
--->

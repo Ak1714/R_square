@@ -1,4 +1,4 @@
-site_name: Analysis of LendingClub Data
+site_name: Analysis of Lending Club Loan Data
 nav:
     - Home: 'index.md'
     - Vizualizing Data: 'LCDA_Part1.md'

@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        
+        
+        <link rel="shortcut icon" href="../img/favicon.ico">
+        <title>Clustering & PCA - Analysis of LendingClub Data</title>
+        <link href="../css/bootstrap.min.css" rel="stylesheet">
+        <link href="../css/font-awesome.min.css" rel="stylesheet">
+        <link href="../css/base.css" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css">
+
+        <script src="../js/jquery-1.10.2.min.js" defer></script>
+        <script src="../js/bootstrap.min.js" defer></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+        <script>hljs.initHighlightingOnLoad();</script> 
+    </head>
+
+    <body>
+        <div class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
+            <div class="container">
+                <a class="navbar-brand" href="..">Analysis of LendingClub Data</a>
+                <!-- Expander button -->
+                <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbar-collapse">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <!-- Expanded navigation -->
+                <div id="navbar-collapse" class="navbar-collapse collapse">
+                        <!-- Main navigation -->
+                        <ul class="nav navbar-nav">
+                            <li class="navitem">
+                                <a href=".." class="nav-link">Home</a>
+                            </li>
+                            <li class="navitem">
+                                <a href="../LCDA_Part1/" class="nav-link">Vizualizing Data</a>
+                            </li>
+                            <li class="navitem active">
+                                <a href="./" class="nav-link">Clustering & PCA</a>
+                            </li>
+                            <li class="navitem">
+                                <a href="../LCDA_Part3/" class="nav-link">Building Models</a>
+                            </li>
+                        </ul>
+
+                    <ul class="nav navbar-nav ml-auto">
+                        <li class="nav-item">
+                            <a href="#" class="nav-link" data-toggle="modal" data-target="#mkdocs_search_modal">
+                                <i class="fa fa-search"></i> Search
+                            </a>
+                        </li>
+                            <li class="nav-item">
+                                <a rel="prev" href="../LCDA_Part1/" class="nav-link">
+                                    <i class="fa fa-arrow-left"></i> Previous
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a rel="next" href="../LCDA_Part3/" class="nav-link">
+                                    Next <i class="fa fa-arrow-right"></i>
+                                </a>
+                            </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="row">
+                    <div class="col-md-3"><div class="navbar-light navbar-expand-md bs-sidebar hidden-print affix" role="complementary">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggler collapsed" data-toggle="collapse" data-target="#toc-collapse" title="Table of Contents">
+            <span class="fa fa-angle-down"></span>
+        </button>
+    </div>
+
+    
+    <div id="toc-collapse" class="navbar-collapse collapse card bg-secondary">
+        <ul class="nav flex-column">
+            
+            
+            
+            
+            
+        </ul>
+    </div>
+</div></div>
+                    <div class="col-md-9" role="main">
+
+<p><b>Cluster Analysis using PCA</b></p>
+<h3 id="importing-packages">Importing packages</h3>
+<pre><code class="r">library(dplyr)
+library(dummies) # dummy variables
+library(cluster) # Clustering
+library(rgl) # 3d plot
+
+load(&quot;LoanStats2017Q3.rda&quot;)
+
+set.seed(12345)
+
+</code></pre>
+
+<h3 id="preparation-for-clustering">Preparation for Clustering</h3>
+<p>Storing variables in vectors:</p>
+<pre><code class="r">annualInc &lt;- lendingData$annual_inc
+loan_amnt &lt;- lendingData$loan_amnt
+empLength &lt;- lendingData$emp_length
+homeOwnership &lt;- lendingData$home_ownership
+dti &lt;- lendingData$dti
+grade &lt;- lendingData$grade
+</code></pre>
+
+<p>Removing the value 'n/a' from emp_length column and replacing it with NA:</p>
+<pre><code class="r">empLength[empLength == 'n/a'] &lt;- NA
+empLength &lt;- addNA(empLength)
+</code></pre>
+
+<p>Storing all variables in a data frame:</p>
+<pre><code class="r">tempDF &lt;- data.frame(annualInc, loan_amnt, 
+                     dti, homeOwnership, empLength)
+</code></pre>
+
+<p>Checking for NULL values in the data frame and then imputing them with the median:</p>
+<pre><code class="r">apply(is.na(tempDF),2,sum)
+</code></pre>
+
+<pre><code>##     annualInc     loan_amnt           dti homeOwnership     empLength 
+##             0             0           184             0             0
+</code></pre>
+<pre><code class="r">tempDF$dti[is.na(tempDF$dti)] &lt;-
+  median(tempDF$dti, na.rm=TRUE)
+
+head(tempDF)
+</code></pre>
+
+<pre><code>##   annualInc loan_amnt   dti homeOwnership empLength
+## 1     42000     12000 27.74           OWN 10+ years
+## 2     79077     16000 15.94          RENT   5 years
+## 3    107000     33000 19.06      MORTGAGE  &lt; 1 year
+## 4    155000     32000 12.35      MORTGAGE 10+ years
+## 5    120000     40000 31.11      MORTGAGE   9 years
+## 6     32000      7000 12.27          RENT 10+ years
+</code></pre>
+<p>Creating a dummy data frame with categorical columns:</p>
+<pre><code class="r">lendDF &lt;- dummy.data.frame(tempDF, names=c(&quot;homeOwnership&quot;, &quot;empLength&quot;))
+
+head(lendDF)
+</code></pre>
+
+<pre><code>##   annualInc loan_amnt   dti homeOwnershipANY homeOwnershipMORTGAGE
+## 1     42000     12000 27.74                0                     0
+## 2     79077     16000 15.94                0                     0
+## 3    107000     33000 19.06                0                     1
+## 4    155000     32000 12.35                0                     1
+## 5    120000     40000 31.11                0                     1
+## 6     32000      7000 12.27                0                     0
+##   homeOwnershipNONE homeOwnershipOWN homeOwnershipRENT empLength&lt; 1 year
+## 1                 0                1                 0                 0
+## 2                 0                0                 1                 0
+## 3                 0                0                 0                 1
+## 4                 0                0                 0                 0
+## 5                 0                0                 0                 0
+## 6                 0                0                 1                 0
+##   empLength1 year empLength10+ years empLength2 years empLength3 years
+## 1               0                  1                0                0
+## 2               0                  0                0                0
+## 3               0                  0                0                0
+## 4               0                  1                0                0
+## 5               0                  0                0                0
+## 6               0                  1                0                0
+##   empLength4 years empLength5 years empLength6 years empLength7 years
+## 1                0                0                0                0
+## 2                0                1                0                0
+## 3                0                0                0                0
+## 4                0                0                0                0
+## 5                0                0                0                0
+## 6                0                0                0                0
+##   empLength8 years empLength9 years empLengthNA
+## 1                0                0           0
+## 2                0                0           0
+## 3                0                0           0
+## 4                0                0           0
+## 5                0                1           0
+## 6                0                0           0
+</code></pre>
+<p>Scaling the values in the data frame for clustering:</p>
+<pre><code class="r">lendDF &lt;- scale(lendDF, center=TRUE, scale=TRUE)
+head(lendDF)
+</code></pre>
+
+<pre><code>##       annualInc  loan_amnt         dti homeOwnershipANY homeOwnershipMORTGAGE
+## 1 -0.1149444060 -0.2702472  0.39399388     -0.008074829            -0.9699266
+## 2  0.0002058191  0.1458219 -0.18034054     -0.008074829            -0.9699266
+## 3  0.0869264204  1.9141156 -0.02848262     -0.008074829             1.0309975
+## 4  0.2360002614  1.8100983 -0.35507448     -0.008074829             1.0309975
+## 5  0.1273005856  2.6422365  0.55801989     -0.008074829             1.0309975
+## 6 -0.1460014562 -0.7903336 -0.35896827     -0.008074829            -0.9699266
+</code></pre>
+<h3 id="pca">PCA</h3>
+<p>Performing K-means clustering:</p>
+<pre><code class="r">lendKmeans &lt;- kmeans(lendDF, centers=7)
+
+lendPCA &lt;- prcomp(lendDF, retx=TRUE)
+plot(lendPCA$x[,1:2], col=lendKmeans$cluster, pch=lendKmeans$cluster)
+legend(&quot;topright&quot;, title = ,legend = 1:7, col = 1:7, pch =  1:7)
+</code></pre>
+
+<p><img src="https://github.com/Ak1714/R_square/blob/master/PCA.png?raw=true" width="500"></p>
+<p>Rotation matrix for first 2 Principal components:</p>
+<pre><code class="r">lendPCA$rotation[,1:2]
+</code></pre>
+
+<pre><code>##                                PC1          PC2
+## annualInc              0.061042681 -0.016995412
+## loan_amnt              0.269090193  0.179204905
+## dti                    0.063038509  0.195250523
+## homeOwnershipANY      -0.003757898  0.005487485
+## homeOwnershipMORTGAGE  0.634478287  0.247075768
+## homeOwnershipNONE     -0.001164800 -0.001968247
+## homeOwnershipOWN      -0.046104282 -0.423947441
+## homeOwnershipRENT     -0.617114633  0.023901256
+## empLength&lt; 1 year     -0.002269023  0.458873341
+## empLength1 year       -0.130646715  0.040961336
+## empLength10+ years     0.287971605 -0.647021527
+## empLength2 years      -0.128632358  0.075200216
+## empLength3 years      -0.098845568  0.076617349
+## empLength4 years      -0.069703845  0.074853769
+## empLength5 years      -0.044876646  0.086490324
+## empLength6 years      -0.017936943  0.103554449
+## empLength7 years      -0.011065154  0.087224445
+## empLength8 years      -0.003133917  0.074989097
+## empLength9 years       0.009005405  0.092448604
+## empLengthNA           -0.025108522 -0.010037250
+</code></pre>
+<pre><code class="r">summary(lendPCA)
+</code></pre>
+
+<pre><code>## Importance of components:
+##                            PC1    PC2     PC3     PC4     PC5     PC6     PC7
+## Standard deviation     1.40804 1.1428 1.12931 1.06944 1.04506 1.04341 1.03802
+## Proportion of Variance 0.09913 0.0653 0.06377 0.05719 0.05461 0.05444 0.05387
+## Cumulative Proportion  0.09913 0.1644 0.22820 0.28538 0.33999 0.39442 0.44830
+</code></pre>
+<h3 id="pca-description">PCA description</h3>
+<p>After inspecting the first two PCs the observations are as follows:</p>
+<p>• The variation on the first component is due to several related variables concerning the borrowers’ loan amount, homes that are mortgaged and borrowers employed for more than 10 years. Borrowers with larger values on the first component will have larger values for these variables.</p>
+<p>• The variation on the second component is due to the borrowers employed for less than a year and for 6 years, homes that are mortgaged, and debt-to-income ratio. Borrowers with larger values on the second component will have larger values for these variables.</p>
+<p>• The <font color="black">black cluster</font> has negative values for PC1, indicating fewer rented homes and lesser number of borrowers employed between 1 to 4 years inclusive. The scores on PC2 are negative as well, indicating borrowers with lower annual income.</p>
+<p>• The <font color="pink">pink cluster</font> has positive values for PC1 than the <font color="black">black cluster</font>, indicating a greater number of borrowers whose homes are mortgaged, have higher loan amounts and have been employed for more than 10 years. The scores on PC2 are near zero, indicating that the values are moderate compared to the rest of the data.</p>
+<p>• The <font color="yellow">yellow clusters</font> &amp; <font color="cyan">cyan clusters</font> overlap with the black cluster and the <font color="red">red cluster</font> &amp; <font color="green">green cluster</font> clusters overlap with <font color="pink">pink cluster</font>. This indicates that the overlapping clusters have similar characteristics.</p>
+<p>• The blue cluster has the largest positive values for PC2 corresponding to larger number of borrowers with employment term &lt; 1 year, higher mortgaged homes, higher debt-to-income ratio and higher annual income. </p>
+<p>• In PC2, there is a trade-off between more borrowers with mortgaged homes and lesser owned homes. Another trade-off between more borrowers with lower employment length (&lt; 1 year) and lower number of borrowers employed for 10+ years.</p>
+<p>• In PC1, there is a trade-off between mortgaged homes and lower number of borrowers with rented homes. Another trade-off between more borrowers employed (&gt;10 years) and less borrowers employed from 1 to 4 years.</p>
+<p>• The outlier seems to affect strongly the first principal component.</p>
+<h3 id="outlier-detection">Outlier detection</h3>
+<pre><code class="r">#lendPCA$x[,1]
+which(lendPCA$x[,1] &gt; 20)
+</code></pre>
+
+<pre><code>## 72164 
+## 72164
+</code></pre>
+<pre><code class="r">lendPCA$x[72164, 1]
+</code></pre>
+
+<pre><code>## [1] 20.42088
+</code></pre>
+<p>Running Kmeans again and replotting:</p>
+<pre><code class="r">lendDF &lt;- lendDF[-72164,]
+lendKmeans &lt;- kmeans(lendDF, centers=7)
+
+lendPCA &lt;- prcomp(lendDF, retx=TRUE)
+plot(lendPCA$x[,1:2], col=lendKmeans$cluster, pch=lendKmeans$cluster)
+legend(&quot;topright&quot;, title = ,legend = 1:7, col = 1:7, pch =  1:7)
+
+plot3d(lendPCA$x[,1:3], col=lendKmeans$cluster, pch=lendKmeans$cluster)
+lendPCA$rotation[,1:3]
+</code></pre>
+
+<p><img src="https://github.com/Ak1714/R_square/blob/master/PCA_wOutlier.png?raw=true" width="500"></p>
+<p>Below is the PCA rotation matrix for first 3 PCs. </p>
+<p>• PC3 is associated with borrowers’ loan amount, rented homes and employment length more than 10 years. </p>
+<p>• The positive variation in the third PC has to do with borrowers with higher rented homes, loan amount and number of borrowers with over 10years of employment. </p>
+<p>• The negative variation in the third PC has to do with lower debt-to-income ratio and lesser number of borrowers with own homes.</p>
+<pre><code>##                                PC1           PC2          PC3
+## annualInc              0.031617716 -0.0008315871  0.028532744
+## loan_amnt              0.267672066  0.1832264396  0.115086885
+## dti                    0.064235286  0.1896985757 -0.249456961
+## homeOwnershipANY      -0.003734964  0.0049164790 -0.033920042
+## homeOwnershipMORTGAGE  0.635696955  0.2469606171  0.069240871
+## homeOwnershipNONE     -0.001156300 -0.0023847493 -0.024727648
+## homeOwnershipOWN      -0.045806272 -0.4334673269 -0.589004430
+## homeOwnershipRENT     -0.618552181  0.0302284478  0.313543643
+## empLength&lt; 1 year     -0.001797284  0.4576296418 -0.058412021
+## empLength1 year       -0.130963768  0.0422715290  0.055130890
+## empLength10+ years     0.287725982 -0.6416129898  0.363060034
+## empLength2 years      -0.128941170  0.0763491979  0.039146531
+## empLength3 years      -0.099034453  0.0770658747  0.008655596
+## empLength4 years      -0.069874577  0.0751682623 -0.003951253
+## empLength5 years      -0.044999307  0.0863378060 -0.037230429
+## empLength6 years      -0.018064151  0.1038335394 -0.007034248
+## empLength7 years      -0.011167098  0.0871645368 -0.027346571
+## empLength8 years      -0.003164955  0.0746941318 -0.032580385
+## empLength9 years       0.008960206  0.0919692402 -0.052628954
+## empLengthNA           -0.023907131 -0.0211256891 -0.570980121
+</code></pre></div>
+            </div>
+        </div>
+
+        <footer class="col-md-12">
+            <hr>
+            <p>Documentation built with <a href="https://www.mkdocs.org/">MkDocs</a>.</p>
+        </footer>
+        <script>
+            var base_url = "..",
+                shortcuts = {"help": 191, "next": 78, "previous": 80, "search": 83};
+        </script>
+        <script src="../js/base.js" defer></script>
+        <script src="../search/main.js" defer></script>
+
+        <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="searchModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="searchModalLabel">Search</h4>
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+            </div>
+            <div class="modal-body">
+                <p>
+                    From here you can search these documents. Enter
+                    your search terms below.
+                </p>
+                <form>
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="Search..." id="mkdocs-search-query" title="Type search term here">
+                    </div>
+                </form>
+                <div id="mkdocs-search-results"></div>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div><div class="modal" id="mkdocs_keyboard_modal" tabindex="-1" role="dialog" aria-labelledby="keyboardModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="keyboardModalLabel">Keyboard Shortcuts</h4>
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+            </div>
+            <div class="modal-body">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th style="width: 20%;">Keys</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="help shortcut"><kbd>?</kbd></td>
+                    <td>Open this help</td>
+                  </tr>
+                  <tr>
+                    <td class="next shortcut"><kbd>n</kbd></td>
+                    <td>Next page</td>
+                  </tr>
+                  <tr>
+                    <td class="prev shortcut"><kbd>p</kbd></td>
+                    <td>Previous page</td>
+                  </tr>
+                  <tr>
+                    <td class="search shortcut"><kbd>s</kbd></td>
+                    <td>Search</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+    </body>
+</html>
