@@ -1,1 +1,8 @@
-site_name: Lending Club
+site_name: Analysis of LendingClub Data
+nav:
+    - Home: 'index.md'
+    - Vizualizing Data: 'LCDA_Part1.md'
+    - Clustering & PCA: 'LCDA_Part2.md'
+    - Building Models: 'LCDA_Part3.md'
+    
+
